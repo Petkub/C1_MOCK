@@ -103,7 +103,7 @@ Propose the design and wait for approval before writing it.
 1. Make the change, add a sample/test, run `python3 tests/run_regression.py`.
 2. Bump `VERSION`, run `python3 tools/build_manifest.py`, commit both with the change, push.
    CI fails if `manifest.json` is stale. Students get the new files on their next judge run (GitHub raw caches
-   for up to 5 minutes).
+   for up to 5 minutes; a forced `--update` adds `?t=<time>` to every URL to skip that cache).
 3. For new students: `python3 tools/build_dist.py` and publish `dist/Mock_Test.zip` (GitHub Release).
 
 ## Commands

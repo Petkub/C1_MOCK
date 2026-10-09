@@ -59,9 +59,12 @@ def base_url():
     return url
 
 
-def fetch(url, limit):
-    """Download url (at most limit bytes). Raises on any problem."""
-    req = urllib.request.Request(url, headers={"User-Agent": "posn-judge-updater", "Cache-Control": "no-cache"})
+def fetch(url, limit, fresh=False):
+    """Download url (at most limit bytes). Raises on any problem. fresh: skip the CDN cache (GitHub raw keeps
+    a file for up to 5 minutes), used by the forced check so --update sees a new version at once."""
+    if fresh:
+        url += "?t=" + str(int(time.time()))
+    req = urllib.request.Request(url, headers={"User-Agent": "posn-judge-updater"})
     with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
         data = r.read(limit + 1)
     if len(data) > limit:
@@ -156,10 +159,10 @@ def plan(judge_dir, remote, local, force):
     return updates, creates
 
 
-def download(items, tmp, url):
+def download(items, tmp, url, fresh):
     """Download every item into tmp (same relative paths) and verify its hash. Raises on any mismatch."""
     for p, src, sha in items:
-        data = fetch(url + src.replace(os.sep, "/"), MAX_FILE)
+        data = fetch(url + src.replace(os.sep, "/"), MAX_FILE, fresh)
         if sha256(data) != sha:
             raise ValueError("hash mismatch: " + p)
         dest = os.path.join(tmp, p)
@@ -229,15 +232,15 @@ def check(judge_dir=ROOT, force=False):
     try:
         touch_stamp(judge_dir)
         url = base_url()
-        data = fetch(url + "manifest.json", MAX_MANIFEST)
+        data = fetch(url + "manifest.json", MAX_MANIFEST, force)
         remote = json.loads(data.decode("utf-8"))
         updates, creates = plan(judge_dir, remote, local, force)
         if not updates and not creates and remote["version"] == version:
             return Result("current", f"Judge v{version} is up to date", version)
         shutil.rmtree(tmp, ignore_errors=True)
         os.makedirs(tmp)
-        download(updates, tmp, url)
-        download(creates, os.path.join(tmp, "_sets"), url)
+        download(updates, tmp, url, force)
+        download(creates, os.path.join(tmp, "_sets"), url, force)
         test_new_judge(tmp)
         apply(judge_dir, updates, creates, tmp)
         with open(os.path.join(tmp, "manifest.json"), "wb") as f:

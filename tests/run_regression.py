@@ -208,7 +208,7 @@ def test_updater():
         code, out, _ = run_student(["3.cpp", "--no-color"], set1, url)
         check(code == 0 and "restarting" in out and "ACCEPTED" in out and "Judge v9.9" in out,
               "normal run updates to v9.9, restarts, judges", f"exit {code}\n{out}")
-        with open(os.path.join(judge_dir, "judge.py")) as f:
+        with open(os.path.join(judge_dir, "judge.py"), encoding="utf-8") as f:
             new_judge = f.read()
         check("marker-v9.9" in new_judge and sha(os.path.join(judge_dir, ".backup", "judge.py")) == old_judge,
               "judge.py replaced, old one kept in Judge/.backup/")
@@ -232,7 +232,7 @@ def test_updater():
         before = sha(os.path.join(judge_dir, "README.txt"))
         code, out, _ = run_student(["--update", "--no-color"], set1, url)
         check(code == 1 and "hash mismatch" in out and sha(os.path.join(judge_dir, "README.txt")) == before
-              and "9.11" in open(os.path.join(judge_dir, "manifest.json")).read(),
+              and "9.11" in open(os.path.join(judge_dir, "manifest.json"), encoding="utf-8").read(),
               "bad hash: update refused, files unchanged", f"exit {code}\n{out}")
 
         # d) manifest with a path outside Judge/: refused
