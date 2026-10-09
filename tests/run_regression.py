@@ -221,7 +221,7 @@ def test_updater():
         code, out, _ = run_student(["--update", "--no-color"], set1, url)
         check(code == 0 and "up to date" in out, "--update: up to date", f"exit {code}\n{out}")
 
-        # b) a newer version appears: normal runs wait an hour, --update takes it now
+        # b) a newer version appears: normal runs wait 10 minutes, --update takes it now
         repo2 = make_repo2(tmp, "9.11", "marker-v9.11")
         code, out, _ = run_student(["3.cpp", "--no-color"], set1, url)
         check(code == 0 and "Judge v9.9" in out and "restarting" not in out, "checked recently: no update yet")

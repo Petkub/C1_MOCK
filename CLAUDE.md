@@ -82,7 +82,7 @@ Propose the design and wait for approval before writing it.
   `JUDGE_UPDATE_URL` may point at `http://127.0.0.1:PORT/` for tests. `JUDGE_NO_UPDATE=1` disables checks
   (set by the regression tests and by the judge when it restarts after an update).
 - `judge.py` is the entry point students already have (Makefile, judge.bat, VS Code tasks), so there is no
-  separate launcher: `judge.py` imports `updater.py`, calls `updater.check()` at start-up (at most once an hour,
+  separate launcher: `judge.py` imports `updater.py`, calls `updater.check()` at start-up (at most once every 10 minutes,
   stamp file `Judge/.update_check`), and after an update re-runs itself with the same arguments.
 - `check()`: fetch `manifest.json` (2 s timeout) -> compare hashes (files whose hash equals the installed
   `Judge/manifest.json` entry are trusted without re-reading; `--update` re-hashes everything) -> download the

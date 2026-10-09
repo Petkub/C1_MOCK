@@ -2,7 +2,7 @@
 """
 Self-update for the POSN Practice Judge (Python 3.7+, standard library only).
 
-judge.py calls check() when it starts (at most once an hour). check() fetches manifest.json from the GitHub
+judge.py calls check() when it starts (at most once every 10 minutes). check() fetches manifest.json from the GitHub
 repo over HTTPS, compares the SHA-256 of the files in Judge/ with it, downloads the changed files to a temp
 folder, verifies every hash, test-runs the new judge.py, and only then swaps the files in with os.replace,
 keeping the old version of each file in Judge/.backup/. Anything wrong (no network, slow network, a bad hash,
@@ -29,7 +29,7 @@ import urllib.request
 REPO = "Petkub/C1_MOCK"
 BASE_URL = "https://raw.githubusercontent.com/" + REPO + "/main/"      # the one place the hosting is set
 TIMEOUT = 2.0                       # seconds per network operation
-CHECK_INTERVAL = 3600               # seconds between automatic checks
+CHECK_INTERVAL = 600                # seconds between automatic checks (10 minutes)
 MAX_MANIFEST = 8 * 1024 * 1024      # bytes
 MAX_FILE = 64 * 1024 * 1024
 ROOT = os.path.dirname(os.path.abspath(__file__))

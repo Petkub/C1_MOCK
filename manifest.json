@@ -662,11 +662,11 @@
 ]
 },
 "files": {
-"CHANGELOG.txt": "673d0e08846404ce181defcbc589da89506f83b996b8bfd526ad3704affef7ac",
-"README.txt": "025849be68acc93f2095fce1dde6d33cac4dec98092ddb46582c787790e1d900",
+"CHANGELOG.txt": "204b4c5d87fd0b431a942e24fb786f383807de8ebeabe1455275d9eefeaba3c2",
+"README.txt": "bea19effb07a6d112362266a0851117186ff72ba97c3129b4bd6e32fe0b9f964",
 "include/bits/stdc++.h": "1545f1f4b55b3acb866effca73203f3a9131773f147331cbf4e983ebf36d6cc9",
 "judge.cmd": "84038f11038804a85edc6df3e3c64f10a72891fad6b98ac7a7ae08e358ed7f44",
-"judge.py": "6b48f7df2970859714499db3b12e11eec225d16d585341bd910d78417fa9951f",
+"judge.py": "73836dc0c4cd9a8ced8d0ab305cc844de97f9d84a33d2b7c2144018dca0dc781",
 "problems/batch/Mock_1/1/01.in": "7da4606de7fa8bb5181beea4940deefacde4b87ba5431fabd09a4e315f378d95",
 "problems/batch/Mock_1/1/01.out": "f458f6d86129f5c0ab6c964238772fbe286c10ee24ae1f68f9064b710a2cc586",
 "problems/batch/Mock_1/1/02.in": "5324ba1fb0bb03929244b7a54770c8a14523f2cc4974eb1529f3238ef8059653",
@@ -4381,11 +4381,11 @@
 "problems/batch/Mock_9/8/16.out": "482dc71c1d202afcc548a436028ad4ad3e0ebd54ab1dd000b5fc7b67e28436e7",
 "problems/batch/problems.json": "6732b346f1cbb4a98926c3bba3b06d9c532f84f257bfcdafb2402d55788f0180",
 "problems/batch/sets.json": "cf95a3299a233f6235c682f78a0b45d868db0e93f46d7b177a708bc05b4ac3cd",
-"updater.py": "357d8ee8c639d267e8fd6a2ad8db2f8aed8c6c79b64f6f59eaf8f0325342b024"
+"updater.py": "7b995753687f2dda3db78c4ce2a40bd43afa04de38ec3ce4ec0bf4125e768e7c"
 },
 "sources": {
 "": "core/",
 "problems/": "problems/"
 },
-"version": "1.3"
+"version": "1.4"
 }

@@ -19,7 +19,7 @@ Options
   --stop           stop at the first failed test
   --ascii          plain ASCII drawing (for old consoles)
   --no-color       disable colors
-  --update         check for a new judge version now (otherwise checked at most once an hour)
+  --update         check for a new judge version now (otherwise checked at most once every 10 minutes)
   --no-update      do not check for a new version this time
 
 Requirements: Python 3.7+ and g++ in PATH (Linux / macOS / Windows).
@@ -1066,7 +1066,7 @@ def cmd_update(st):
 
 
 def self_update(st, argv):
-    """Automatic check (at most once an hour). After an update, run the new judge with the same arguments
+    """Automatic check (at most once every 10 minutes). After an update, run the new judge with the same arguments
     and return its exit code; None = nothing happened, carry on."""
     if updater is None or "--no-update" in argv or os.environ.get("JUDGE_NO_UPDATE"):
         return None
