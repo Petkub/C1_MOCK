@@ -14,6 +14,7 @@ Regression tests for the POSN Practice Judge.
 """
 import contextlib
 import functools
+import glob
 import hashlib
 import http.server
 import socket
@@ -262,6 +263,14 @@ def test_updater():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def test_data():
+    """Every test input has its expected output (the judge silently skips an .in without .out)."""
+    print("Test data")
+    orphans = [f for f in glob.glob(os.path.join(REPO, "problems", "batch", "Mock_*", "*", "*.in"))
+               if not os.path.exists(f[:-3] + ".out")]
+    check(not orphans, "every .in has an .out", ", ".join(os.path.relpath(f, REPO) for f in orphans[:5]))
+
+
 def test_manifest():
     print("Manifest")
     p = subprocess.run([sys.executable, os.path.join(REPO, "tools", "build_manifest.py"), "--check"],
@@ -277,6 +286,7 @@ def main():
     test_cli()
     test_student_package()
     test_updater()
+    test_data()
     test_manifest()
     print()
     if FAILED:
