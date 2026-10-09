@@ -662,7 +662,7 @@
 ]
 },
 "files": {
-"CHANGELOG.txt": "1bda88e1df2979cb43efc695b998a361e2fb13207460d4b42a43db799765ea6b",
+"CHANGELOG.txt": "673d0e08846404ce181defcbc589da89506f83b996b8bfd526ad3704affef7ac",
 "README.txt": "025849be68acc93f2095fce1dde6d33cac4dec98092ddb46582c787790e1d900",
 "include/bits/stdc++.h": "1545f1f4b55b3acb866effca73203f3a9131773f147331cbf4e983ebf36d6cc9",
 "judge.cmd": "84038f11038804a85edc6df3e3c64f10a72891fad6b98ac7a7ae08e358ed7f44",
@@ -697,6 +697,7 @@
 "problems/batch/Mock_1/1/14.out": "46dfdb86a44b7841c5300bac787856d3c91d713b7c79d22d92b1d74664b9f8bb",
 "problems/batch/Mock_1/1/15.in": "9e0a7afeb5d1f4aeeaab661099ec930ff0816061579ab8c2ddd1fb645af43d8e",
 "problems/batch/Mock_1/1/15.out": "6bb68cfe118906db04e05555c97dc421918554f322999f2ce727b19bfd16fb33",
+"problems/batch/Mock_1/1/16.in": "67c68c1f40bc27caaeab68845cbbc63b9e0215fbb7d1128ec4d6fab447cb61b8",
 "problems/batch/Mock_1/2/01.in": "83d090fe62651a81809387f2fadc498bed1a75910bf54ff33d4e1e3844cff237",
 "problems/batch/Mock_1/2/01.out": "ab2fafd33682c9e5457b36098c493a9f06572e6bd9b562f2513943b7869560a1",
 "problems/batch/Mock_1/2/02.in": "af44f3acd9e0baedfdf7397698d2a863d31d20db0b998fdb49d7504030b19edc",
@@ -4385,5 +4386,5 @@
 "": "core/",
 "problems/": "problems/"
 },
-"version": "1.2"
+"version": "1.3"
 }
