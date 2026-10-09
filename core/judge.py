@@ -19,6 +19,8 @@ Options
   --stop           stop at the first failed test
   --ascii          plain ASCII drawing (for old consoles)
   --no-color       disable colors
+  --update         check for a new judge version now (otherwise checked at most once an hour)
+  --no-update      do not check for a new version this time
 
 Requirements: Python 3.7+ and g++ in PATH (Linux / macOS / Windows).
 Output comparison: line by line, ignoring trailing spaces and trailing empty lines.
@@ -39,6 +41,11 @@ import time
 import unicodedata
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
+sys.dont_write_bytecode = True      # no __pycache__ in Judge/ (updater.py is imported from there)
+try:
+    import updater                  # Judge/updater.py: self-update from the GitHub repo
+except Exception:                   # missing or broken: the judge works without it
+    updater = None
 WIDTH = 64
 PY = "python" if os.name == "nt" else "python3"
 OUTPUT_LIMIT = 64 * 1024 * 1024     # bytes of stdout kept per test; more than this = Wrong Answer
@@ -124,6 +131,21 @@ def bar(st, frac, width=24):
 def stars(st, tier):
     ch = st.chars
     return st.yellow(ch["star"] * tier) + st.dim(ch["nostar"] * (3 - tier))
+
+
+def installed_version():
+    """Version of the installed package (Judge/manifest.json), '' in the source repo."""
+    try:
+        with open(os.path.join(ROOT, "manifest.json"), encoding="utf-8") as f:
+            return str(json.load(f).get("version", ""))
+    except (OSError, ValueError):
+        return ""
+
+
+def title(st, text):
+    """First line of the header box: the title and, in an installed package, 'Judge vX.Y'."""
+    ver = installed_version()
+    return st.bold(st.cyan(text)) + (st.dim(f"  Judge v{ver}") if ver else "")
 
 
 VERDICT = {
@@ -799,15 +821,15 @@ def clip(s, n=46):
 def judge_one(src, pdir, num, meta, st, tl, show_diff, stop):
     set_sample_count(meta, num)
     m = meta.get(num, {})
-    title = m.get("en", os.path.basename(pdir))
+    name = m.get("en", os.path.basename(pdir))
     tier = m.get("tier", 0)
     label = where_in_sets(num)
     srcname = os.path.basename(src)
     if st.ascii:                       # measure what will really be printed
-        title, srcname = to_ascii(title), to_ascii(srcname)
-    title = clip(title, WIDTH - 4 - 9 - visible_len(label) - 2 - (5 if tier else 2))
-    head = [st.bold(st.cyan("POSN Camp 1 · Practice Judge")),
-            f"Problem  {st.bold(label)}  {title}  " + (stars(st, tier) if tier else ""),
+        name, srcname = to_ascii(name), to_ascii(srcname)
+    name = clip(name, WIDTH - 4 - 9 - visible_len(label) - 2 - (5 if tier else 2))
+    head = [title(st, "POSN Camp 1 · Practice Judge"),
+            f"Problem  {st.bold(label)}  {name}  " + (stars(st, tier) if tier else ""),
             f"Source   {clip(srcname, WIDTH - 4 - 9)}",
             f"Limits   {tl:.1f} s per test"]
     box(st, head, st.dim)
@@ -912,7 +934,7 @@ def cmd_set(k, folder, meta, sets, st, tl, show_diff):
         return 1
     s = sets[k - 1]
     probs = s["problems"]
-    head = [st.bold(st.cyan(f"POSN Camp 1 · Mock Exam Set {k}")),
+    head = [title(st, f"POSN Camp 1 · Mock Exam Set {k}"),
             f"{s.get('level_en', '')}",
             f"{len(probs)} problems · 3 hours · {100 * len(probs)} points"]
     box(st, head, st.dim)
@@ -1019,11 +1041,52 @@ def on_stop_signal(signum, frame):
     raise KeyboardInterrupt
 
 
-KNOWN_FLAGS = {"--stop", "--ascii", "--no-color", "--color", "--list", "--help"}
+KNOWN_FLAGS = {"--stop", "--ascii", "--no-color", "--color", "--list", "--help", "--update", "--no-update"}
+
+
+def cmd_update(st):
+    """--update: check the repo now and say what happened."""
+    if updater is None:
+        print(st.red("updater.py is missing next to judge.py; download the package again."))
+        return 1
+    print("  " + st.dim("Checking for updates ..."), flush=True)
+    r = updater.check(ROOT, force=True)
+    if r.status == "updated":
+        print("  " + st.green(st.bold(f"Judge {r.message}")))
+        for name in r.files[:15]:
+            print("    " + st.dim(name))
+        if len(r.files) > 15:
+            print("    " + st.dim(f"... {len(r.files) - 15} more"))
+        return 0
+    if r.status == "current":
+        print("  " + st.green(r.message))
+        return 0
+    print("  " + st.yellow(f"No update: {r.message}"))
+    return 1
+
+
+def self_update(st, argv):
+    """Automatic check (at most once an hour). After an update, run the new judge with the same arguments
+    and return its exit code; None = nothing happened, carry on."""
+    if updater is None or "--no-update" in argv or os.environ.get("JUDGE_NO_UPDATE"):
+        return None
+    try:
+        r = updater.check(ROOT)
+    except Exception:
+        return None
+    if r.status != "updated":
+        return None
+    print("  " + st.dim(f"Judge {r.message}; restarting ..."))
+    env = dict(os.environ, JUDGE_NO_UPDATE="1")
+    try:
+        return subprocess.call([sys.executable, os.path.abspath(__file__)] + argv, env=env)
+    except OSError:
+        return None
 
 
 def main():
     argv = sys.argv[1:]
+    original_argv = list(argv)
     opts = {"--tl": "1.0", "--diff": "3"}
     flags = set()
     pos = []
@@ -1062,6 +1125,11 @@ def main():
     if ascii_only:
         sys.stdout = AsciiOut(sys.stdout)
     st = Style(color, ascii_only, tty)
+    if "--update" in flags:
+        return cmd_update(st)
+    code = self_update(st, original_argv)
+    if code is not None:
+        return code
     meta = load_meta()
     if os.name != "nt":
         raise_stack_limit()     # Windows: the stack size is set when linking (compile_source)

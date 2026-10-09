@@ -17,3 +17,5 @@ From the Judge folder (or use ../Judge/judge.py from a set folder):
 Options: --tl SECONDS  --diff N  --stop  --ascii  --no-color
 Test data: problems/batch/Mock_K/P/*.in|out (the first 5 or 6 tests are the samples shown in the statement).
 Windows: VS Code's Ctrl+Shift+B runs judge.cmd (uses the py launcher if installed, else python).
+Updates: the judge updates itself from GitHub when online (checked at most once an hour; your .cpp files
+are never touched). Force a check: python3 ../Judge/judge.py --update   (version shown in the header box)
