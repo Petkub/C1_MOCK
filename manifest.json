@@ -662,6 +662,7 @@
 ]
 },
 "files": {
+"CHANGELOG.txt": "d15b4362c8bc8134bc40b9b565eaaec3d57fcc712554dd8d2b31cd0753a2a63d",
 "README.txt": "025849be68acc93f2095fce1dde6d33cac4dec98092ddb46582c787790e1d900",
 "include/bits/stdc++.h": "1545f1f4b55b3acb866effca73203f3a9131773f147331cbf4e983ebf36d6cc9",
 "judge.cmd": "84038f11038804a85edc6df3e3c64f10a72891fad6b98ac7a7ae08e358ed7f44",
@@ -4384,5 +4385,5 @@
 "": "core/",
 "problems/": "problems/"
 },
-"version": "1.0"
+"version": "1.1"
 }

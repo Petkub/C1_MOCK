@@ -1,0 +1,4 @@
+POSN Practice Judge - changes
+
+1.1  The judge updates itself from GitHub (see README.txt: --update).
+1.0  First version with test data in Judge/problems/.
