@@ -30,6 +30,7 @@ FAILED = []
 
 
 def check(ok, name, detail=""):
+    detail = detail.encode("ascii", "backslashreplace").decode("ascii")    # Windows consoles: cp1252
     print(("  ok    " if ok else "  FAIL  ") + name + ("" if ok else "   " + detail))
     if not ok:
         FAILED.append(name)
