@@ -1,0 +1,76 @@
+1: no account kim
+2: no account kim
+3: no account bob
+4: no account b
+5: no account anna
+7: insufficient funds
+12: no account b
+17: insufficient funds
+19: no account ann
+20: insufficient funds
+21: already exists
+24: no account ann
+25: no account ann
+27: already exists
+28: no account ann
+29: already exists
+31: already exists
+32: not empty
+34: insufficient funds
+35: already exists
+36: already exists
+37: already exists
+39: already exists
+40: not empty
+41: insufficient funds
+42: no account ann
+43: insufficient funds
+45: already exists
+46: insufficient funds
+47: no account zed
+48: insufficient funds
+51: no account ann
+52: insufficient funds
+54: already exists
+55: no account ann
+56: already exists
+57: insufficient funds
+58: no account zed
+59: no account zed
+61: no account zed
+62: already exists
+67: already exists
+69: insufficient funds
+71: not empty
+72: not empty
+74: not empty
+75: already exists
+76: insufficient funds
+77: insufficient funds
+79: not empty
+81: insufficient funds
+82: no account ann
+83: insufficient funds
+84: no account ann
+85: insufficient funds
+86: no account ann
+87: already exists
+88: no account ann
+89: already exists
+91: insufficient funds
+92: not empty
+93: not empty
+94: already exists
+95: insufficient funds
+96: already exists
+97: insufficient funds
+98: insufficient funds
+99: already exists
+ACCOUNTS 7
+an 81
+ann 0
+anna 34
+b 13
+bob 9
+kim 7
+zed 7

@@ -1,0 +1,6 @@
+5
+OPEN ann
+OPEN bob
+DEPOSIT ann 500
+WITHDRAW ann 200
+WITHDRAW bob 1

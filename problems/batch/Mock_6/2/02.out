@@ -1,0 +1,4 @@
+ALL: 10 20 30
+ONCE: 10 20 30
+TOTAL: 3
+BEST: day 1 (3)

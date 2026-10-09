@@ -1,0 +1,9 @@
+8
+TYPE ab
+TYPE cd
+UNDO
+UNDO
+REDO
+TYPE x
+REDO
+PRINT

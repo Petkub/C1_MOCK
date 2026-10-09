@@ -1,0 +1,7 @@
+6
+PRINT
+TYPE abc
+TYPE d
+DELETE 1
+TYPE e
+PRINT

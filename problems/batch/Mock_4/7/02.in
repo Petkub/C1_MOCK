@@ -1,0 +1,9 @@
+8
+DEPOSIT tom 5
+OPEN tom
+DEPOSIT tom 7
+OPEN tom
+CLOSE tom
+WITHDRAW tom 7
+CLOSE tom
+OPEN tom

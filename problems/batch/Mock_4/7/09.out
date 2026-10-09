@@ -1,0 +1,49 @@
+1: no account b
+2: no account c
+3: no account a
+4: no account b
+5: no account a
+6: no account b
+9: no account c
+10: already exists
+11: insufficient funds
+12: already exists
+14: no account c
+15: already exists
+18: already exists
+19: insufficient funds
+22: no account a
+23: already exists
+24: no account c
+26: no account a
+31: no account c
+33: insufficient funds
+34: already exists
+35: insufficient funds
+36: insufficient funds
+41: already exists
+42: already exists
+44: not empty
+46: already exists
+48: already exists
+54: already exists
+55: not empty
+56: not empty
+62: already exists
+68: already exists
+70: already exists
+74: not empty
+76: already exists
+77: already exists
+84: not empty
+85: already exists
+86: already exists
+87: not empty
+92: already exists
+93: already exists
+95: already exists
+96: already exists
+ACCOUNTS 3
+a 340
+b 93
+c 81

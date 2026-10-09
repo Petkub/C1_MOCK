@@ -1,0 +1,5 @@
+reflexive yes
+symmetric no
+antisymmetric yes
+transitive yes
+partial order

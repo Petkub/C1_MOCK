@@ -1,0 +1,9 @@
+disk 1: C -> B
+disk 2: C -> A
+disk 1: B -> A
+disk 3: C -> B
+disk 1: A -> C
+disk 2: A -> B
+disk 1: C -> B
+TOTAL 7
+DISK 3 MOVES 1

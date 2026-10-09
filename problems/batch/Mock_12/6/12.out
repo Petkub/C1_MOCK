@@ -1,0 +1,6 @@
+{}
+{e} {h} {l} {o}
+{e,h} {e,l} {e,o} {h,l} {h,o} {l,o}
+{e,h,l} {e,h,o} {e,l,o} {h,l,o}
+{e,h,l,o}
+16

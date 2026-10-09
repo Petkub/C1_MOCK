@@ -1,0 +1,8 @@
+{}
+{u} {v} {w} {x} {y} {z}
+{u,v} {u,w} {u,x} {u,y} {u,z} {v,w} {v,x} {v,y} {v,z} {w,x} {w,y} {w,z} {x,y} {x,z} {y,z}
+{u,v,w} {u,v,x} {u,v,y} {u,v,z} {u,w,x} {u,w,y} {u,w,z} {u,x,y} {u,x,z} {u,y,z} {v,w,x} {v,w,y} {v,w,z} {v,x,y} {v,x,z} {v,y,z} {w,x,y} {w,x,z} {w,y,z} {x,y,z}
+{u,v,w,x} {u,v,w,y} {u,v,w,z} {u,v,x,y} {u,v,x,z} {u,v,y,z} {u,w,x,y} {u,w,x,z} {u,w,y,z} {u,x,y,z} {v,w,x,y} {v,w,x,z} {v,w,y,z} {v,x,y,z} {w,x,y,z}
+{u,v,w,x,y} {u,v,w,x,z} {u,v,w,y,z} {u,v,x,y,z} {u,w,x,y,z} {v,w,x,y,z}
+{u,v,w,x,y,z}
+64

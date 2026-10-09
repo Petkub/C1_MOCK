@@ -1,0 +1,25 @@
+            A                         B                         C                         D                         E
+           B B                       C C                       D D                       E E                       F F
+          C   C                     D   D                     E   E                     F   F                     G   G
+         D     D                   E     E                   F     F                   G     G                   H     H
+        E       E                 F       F                 G       G                 H       H                 I       I
+       F         F               G         G               H         H               I         I               J         J
+      G           G             H           H             I           I             J           J             K           K
+     H             H           I             I           J             J           K             K           L             L
+    I               I         J               J         K               K         L               L         M               M
+   J                 J       K                 K       L                 L       M                 M       N                 N
+  K                   K     L                   L     M                   M     N                   N     O                   O
+ L                     L   M                     M   N                     N   O                     O   P                     P
+M                       M N                       N O                       O P                       P Q                       Q
+ L                     L   M                     M   N                     N   O                     O   P                     P
+  K                   K     L                   L     M                   M     N                   N     O                   O
+   J                 J       K                 K       L                 L       M                 M       N                 N
+    I               I         J               J         K               K         L               L         M               M
+     H             H           I             I           J             J           K             K           L             L
+      G           G             H           H             I           I             J           J             K           K
+       F         F               G         G               H         H               I         I               J         J
+        E       E                 F       F                 G       G                 H       H                 I       I
+         D     D                   E     E                   F     F                   G     G                   H     H
+          C   C                     D   D                     E   E                     F   F                     G   G
+           B B                       C C                       D D                       E E                       F F
+            A                         B                         C                         D                         E

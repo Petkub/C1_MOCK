@@ -1,0 +1,7 @@
+{}
+{a} {e} {i} {o} {u}
+{a,e} {a,i} {a,o} {a,u} {e,i} {e,o} {e,u} {i,o} {i,u} {o,u}
+{a,e,i} {a,e,o} {a,e,u} {a,i,o} {a,i,u} {a,o,u} {e,i,o} {e,i,u} {e,o,u} {i,o,u}
+{a,e,i,o} {a,e,i,u} {a,e,o,u} {a,i,o,u} {e,i,o,u}
+{a,e,i,o,u}
+32

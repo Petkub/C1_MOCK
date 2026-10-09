@@ -1,0 +1,155 @@
+21
+3 3
+X.O
+.X.
+XOO
+4 3
+OOXX
+X.OX
+OOOX
+XXXO
+4 4
+OX..
+O.OO
+XOXX
+XX.O
+5 3
+.X..O
+.....
+.....
+.....
+.....
+5 4
+..XOX
+OOXXO
+...XX
+OXO.X
+OOXXO
+5 5
+OOOOO
+XXXOX
+OOXXX
+XXOOX
+OXOXX
+6 3
+XX.X.O
+X...X.
+...OO.
+.OX.OX
+XO...O
+O.XOX.
+6 4
+XXXOXX
+OOOOXO
+..OXXO
+.O.XX.
+XOOXXO
+O..X..
+6 5
+OXXOXX
+XXOOXO
+XOXOXO
+XOXOOX
+O.O.XO
+X.OXXO
+6 6
+O..OXO
+X..X.O
+O..O.X
+OOOOOX
+X.X..O
+.XXXXX
+7 3
+..OOO..
+.O.X...
+X.O.X..
+X.OXX.X
+OO.....
+XOOO.O.
+.XX.X.X
+7 4
+XXOX.OX
+.XX.X.O
+.X..XOO
+.......
+OXOOXOX
+.X.OO..
+XOXOO..
+7 5
+..XX...
+.......
+.......
+.......
+.......
+.......
+....O..
+7 6
+X.OOX..
+.......
+..X....
+.X.O..O
+.......
+X.....O
+X......
+7 7
+OOXOXXX
+OXOXOXO
+OOXOXXO
+XXXOOXX
+OOOXOOO
+XXOOOOX
+XOXXXXX
+8 3
+........
+........
+........
+........
+..X.....
+........
+O.......
+........
+8 4
+XX..O.XX
+XX.X.O..
+O.OXXXO.
+XOXX.OX.
+XXOO.O.O
+.XOXOXOX
+OOOO..OO
+..XX.OO.
+8 5
+...X.O..
+.OOXO...
+..OXXXXX
+X.OO....
+........
+...O.X.X
+.X.....O
+OOO.X.X.
+8 6
+...O.X..
+.......O
+...O.X..
+....O...
+OXXXXO.O
+.XO.X...
+........
+.X....O.
+8 7
+...O....
+XO.XOXX.
+.X..OX.O
+X.XOX...
+..OX...X
+O..OXO..
+...O.X..
+.O.OXX.O
+8 8
+.XOO..X.
+X.OO....
+.X.O.XO.
+O.OOX..X
+XX.X.X..
+OX...O..
+..XX....
+OX.XO.OO

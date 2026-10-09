@@ -1,0 +1,1253 @@
+{
+ "1": {
+  "title": "ผลรวมที่หารลงตัว",
+  "en": "Divisible Sum",
+  "tier": 1,
+  "dir": "Mock_10/1",
+  "samples": 6
+ },
+ "2": {
+  "title": "จำนวนเฉพาะ palindrome",
+  "en": "Palindromic Primes",
+  "tier": 1,
+  "dir": "Mock_4/1",
+  "samples": 6
+ },
+ "3": {
+  "title": "จำนวนเฉพาะแฝด ญาติ และ sexy",
+  "en": "Twin, Cousin and Sexy Primes",
+  "tier": 1,
+  "dir": "Mock_1/3",
+  "samples": 6
+ },
+ "4": {
+  "title": "จำนวนเฉพาะรอบตัว",
+  "en": "Primes Around N",
+  "tier": 1,
+  "dir": "Mock_8/2",
+  "samples": 6
+ },
+ "5": {
+  "title": "แยกตัวประกอบ",
+  "en": "Prime Factorization",
+  "tier": 2,
+  "dir": "Mock_5/5",
+  "samples": 5
+ },
+ "6": {
+  "title": "จำนวนสมบูรณ์และจำนวนคู่มิตร",
+  "en": "Perfect and Amicable Numbers",
+  "tier": 1,
+  "dir": "Mock_1/5",
+  "samples": 6
+ },
+ "8": {
+  "title": "Fibonacci ตัวที่ n แบบเต็ม",
+  "en": "Big Fibonacci",
+  "tier": 2,
+  "dir": "Mock_11/3",
+  "samples": 6
+ },
+ "9": {
+  "title": "หาสูตรจากตาราง",
+  "en": "Guess the Formula",
+  "tier": 2,
+  "dir": "Mock_10/8",
+  "samples": 6
+ },
+ "10": {
+  "title": "วงจรกำลังของหลัก",
+  "en": "Digit Power Cycle",
+  "tier": 2,
+  "dir": "Mock_2/8",
+  "samples": 6
+ },
+ "100": {
+  "title": "เขาวงกต",
+  "en": "Maze",
+  "tier": 3,
+  "dir": "Mock_6/7",
+  "samples": 6
+ },
+ "101": {
+  "title": "หลักหน่วยของเลขยกกำลัง",
+  "en": "Last Digit of Powers",
+  "tier": 2,
+  "dir": "Mock_2/4",
+  "samples": 5,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "06",
+     "07",
+     "08"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "04",
+     "05",
+     "09",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15"
+    ]
+   }
+  ]
+ },
+ "102": {
+  "title": "เลขศูนย์ท้าย factorial",
+  "en": "Trailing Zeros of Factorials",
+  "tier": 2,
+  "dir": "Mock_11/5",
+  "samples": 5,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "06",
+     "07",
+     "08"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "04",
+     "05",
+     "09",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15"
+    ]
+   }
+  ]
+ },
+ "103": {
+  "title": "มุมขวาบน",
+  "en": "Top-Right Corner",
+  "tier": 3,
+  "dir": "Mock_14/7",
+  "samples": 5,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "06",
+     "07",
+     "08"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "04",
+     "05",
+     "09",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15"
+    ]
+   }
+  ]
+ },
+ "104": {
+  "title": "วงกลมตัดทีละคน",
+  "en": "Every Second Person",
+  "tier": 3,
+  "dir": "Mock_7/7",
+  "samples": 5,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "06",
+     "07",
+     "08"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "04",
+     "05",
+     "09",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15"
+    ]
+   }
+  ]
+ },
+ "105": {
+  "title": "นับสี่เหลี่ยมในตาราง",
+  "en": "Counting Squares and Rectangles",
+  "tier": 2,
+  "dir": "Mock_3/6",
+  "samples": 5,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "06",
+     "07",
+     "08"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "04",
+     "05",
+     "09",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15"
+    ]
+   }
+  ]
+ },
+ "106": {
+  "title": "ตารางเลขทแยง",
+  "en": "Diagonal Numbering",
+  "tier": 2,
+  "dir": "Mock_9/7",
+  "samples": 6,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "07",
+     "08",
+     "09",
+     "10"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "04",
+     "05",
+     "06",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16"
+    ]
+   }
+  ]
+ },
+ "107": {
+  "title": "ผลรวมเลขโดดทั้งหมด",
+  "en": "Counting Digits",
+  "tier": 3,
+  "dir": "Mock_13/7",
+  "samples": 6,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "07",
+     "08",
+     "09",
+     "10"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "04",
+     "05",
+     "06",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16"
+    ]
+   }
+  ]
+ },
+ "108": {
+  "title": "Fibonacci modulo",
+  "en": "Fibonacci Modulo",
+  "tier": 2,
+  "dir": "Mock_5/7",
+  "samples": 6,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "07",
+     "08",
+     "09",
+     "10"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "04",
+     "05",
+     "06",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16"
+    ]
+   }
+  ]
+ },
+ "109": {
+  "title": "นับในรูปหลายเหลี่ยม",
+  "en": "Diagonals of a Polygon",
+  "tier": 2,
+  "dir": "Mock_12/5",
+  "samples": 6,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "04",
+     "07",
+     "08",
+     "09"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "05",
+     "06",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16"
+    ]
+   }
+  ]
+ },
+ "11": {
+  "title": "กระบวนการ Kaprekar",
+  "en": "Kaprekar's Routine",
+  "tier": 2,
+  "dir": "Mock_4/6",
+  "samples": 5
+ },
+ "110": {
+  "title": "ตู้ locker",
+  "en": "Lockers",
+  "tier": 2,
+  "dir": "Mock_4/4",
+  "samples": 6,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "07",
+     "08",
+     "09",
+     "10"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "04",
+     "05",
+     "06",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16"
+    ]
+   }
+  ]
+ },
+ "111": {
+  "title": "จุดบนส่วนของเส้นตรง",
+  "en": "Lattice Points on a Segment",
+  "tier": 2,
+  "dir": "Mock_6/5",
+  "samples": 6,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "04",
+     "07",
+     "08",
+     "09"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "05",
+     "06",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16"
+    ]
+   }
+  ]
+ },
+ "112": {
+  "title": "เข็มนาฬิกาทับกัน",
+  "en": "Overlapping Clock Hands",
+  "tier": 2,
+  "dir": "Mock_10/7",
+  "samples": 5,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "06",
+     "07",
+     "08"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "04",
+     "05",
+     "09",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15",
+     "16"
+    ]
+   }
+  ]
+ },
+ "113": {
+  "title": "ปฏิทินพันปี",
+  "en": "Perpetual Calendar",
+  "tier": 3,
+  "dir": "Mock_15/8",
+  "samples": 5,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "06",
+     "07",
+     "08"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "04",
+     "05",
+     "09",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14"
+    ]
+   }
+  ]
+ },
+ "115": {
+  "title": "ตัด cake",
+  "en": "Cutting Cakes",
+  "tier": 1,
+  "dir": "Mock_1/7",
+  "samples": 5,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "06",
+     "07",
+     "08"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "04",
+     "05",
+     "09",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15"
+    ]
+   }
+  ]
+ },
+ "116": {
+  "title": "เกรดเฉลี่ย",
+  "en": "GPA",
+  "tier": 1,
+  "dir": "Mock_9/2",
+  "samples": 6
+ },
+ "117": {
+  "title": "สามเหลี่ยม Floyd",
+  "en": "Floyd's Triangle",
+  "tier": 1,
+  "dir": "Mock_13/1",
+  "samples": 5
+ },
+ "118": {
+  "title": "ส่งข้อความด้วย parity bit",
+  "en": "Parity Bit",
+  "tier": 2,
+  "dir": "Mock_7/3",
+  "samples": 6
+ },
+ "119": {
+  "title": "จำนวนลบแบบ two's complement",
+  "en": "Two's Complement",
+  "tier": 2,
+  "dir": "Mock_15/5",
+  "samples": 5
+ },
+ "12": {
+  "title": "ลำดับอ่านออกเสียง",
+  "en": "Look-and-Say",
+  "tier": 2,
+  "dir": "Mock_3/3",
+  "samples": 5
+ },
+ "120": {
+  "title": "รหัสสี",
+  "en": "Hex Color",
+  "tier": 1,
+  "dir": "Mock_6/3",
+  "samples": 6
+ },
+ "121": {
+  "title": "อายุจริง",
+  "en": "Exact Age",
+  "tier": 2,
+  "dir": "Mock_11/4",
+  "samples": 6
+ },
+ "122": {
+  "title": "หุ่นยนต์เดินวน",
+  "en": "Robot Loop",
+  "tier": 2,
+  "dir": "Mock_8/5",
+  "samples": 5,
+  "subtasks": [
+   {
+    "points": 40,
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "06",
+     "07",
+     "08"
+    ]
+   },
+   {
+    "points": 60,
+    "tests": [
+     "04",
+     "05",
+     "09",
+     "10",
+     "11",
+     "12",
+     "13",
+     "14",
+     "15"
+    ]
+   }
+  ]
+ },
+ "123": {
+  "title": "จัตุรัสกล",
+  "en": "Magic Square",
+  "tier": 2,
+  "dir": "Mock_4/8",
+  "samples": 6
+ },
+ "124": {
+  "title": "รหัส Vigenère",
+  "en": "Vigenère Cipher",
+  "tier": 1,
+  "dir": "Mock_9/3",
+  "samples": 6
+ },
+ "125": {
+  "title": "เปิดช่องกู้ระเบิด",
+  "en": "Minesweeper Reveal",
+  "tier": 2,
+  "dir": "Mock_10/4",
+  "samples": 6
+ },
+ "126": {
+  "title": "ตารางแข่งพบกันหมด",
+  "en": "Round-Robin Schedule",
+  "tier": 3,
+  "dir": "Mock_6/6",
+  "samples": 6
+ },
+ "127": {
+  "title": "มวลของ molecule",
+  "en": "Molar Mass",
+  "tier": 3,
+  "dir": "Mock_6/8",
+  "samples": 6
+ },
+ "128": {
+  "title": "คิดเงินพร้อมส่วนลด",
+  "en": "Discount Receipt",
+  "tier": 2,
+  "dir": "Mock_13/3",
+  "samples": 6
+ },
+ "13": {
+  "title": "สามเหลี่ยม Pascal คู่คี่",
+  "en": "Pascal's Triangle Mod 2",
+  "tier": 2,
+  "dir": "Mock_3/5",
+  "samples": 6
+ },
+ "15": {
+  "title": "เครื่องคิดเลขเศษส่วน",
+  "en": "Fraction Calculator",
+  "tier": 2,
+  "dir": "Mock_15/2",
+  "samples": 5
+ },
+ "16": {
+  "title": "แปลงเลขฐาน",
+  "en": "Base Conversion",
+  "tier": 1,
+  "dir": "Mock_3/1",
+  "samples": 5
+ },
+ "17": {
+  "title": "บวกเลขฐาน",
+  "en": "Base-b Addition",
+  "tier": 2,
+  "dir": "Mock_8/3",
+  "samples": 6
+ },
+ "18": {
+  "title": "ฐานสามสมดุล",
+  "en": "Balanced Ternary",
+  "tier": 2,
+  "dir": "Mock_14/5",
+  "samples": 6
+ },
+ "19": {
+  "title": "เลข Roman",
+  "en": "Roman Numerals",
+  "tier": 2,
+  "dir": "Mock_2/5",
+  "samples": 6
+ },
+ "20": {
+  "title": "ตรวจเลข credit card",
+  "en": "Luhn Check",
+  "tier": 1,
+  "dir": "Mock_2/1",
+  "samples": 6
+ },
+ "21": {
+  "title": "เลขประจำตัวประชาชน",
+  "en": "Thai ID Check Digit",
+  "tier": 2,
+  "dir": "Mock_5/1",
+  "samples": 5
+ },
+ "22": {
+  "title": "เลข ISBN",
+  "en": "ISBN-10 and ISBN-13",
+  "tier": 2,
+  "dir": "Mock_12/4",
+  "samples": 5
+ },
+ "23": {
+  "title": "การดำเนินการของ set",
+  "en": "Set Operations",
+  "tier": 1,
+  "dir": "Mock_1/6",
+  "samples": 6
+ },
+ "24": {
+  "title": "function หรือไม่",
+  "en": "Is It a Function?",
+  "tier": 1,
+  "dir": "Mock_3/2",
+  "samples": 6
+ },
+ "25": {
+  "title": "สมบัติความสัมพันธ์",
+  "en": "Properties of a Relation",
+  "tier": 2,
+  "dir": "Mock_5/2",
+  "samples": 6
+ },
+ "26": {
+  "title": "ตารางค่าความจริง",
+  "en": "Truth Table",
+  "tier": 3,
+  "dir": "Mock_14/8",
+  "samples": 6
+ },
+ "27": {
+  "title": "คนพูดจริงคนพูดเท็จ",
+  "en": "Knights and Knaves",
+  "tier": 3,
+  "dir": "Mock_7/8",
+  "samples": 6
+ },
+ "28": {
+  "title": "subset ทั้งหมด",
+  "en": "All Subsets",
+  "tier": 2,
+  "dir": "Mock_12/6",
+  "samples": 5
+ },
+ "29": {
+  "title": "จัดที่นั่ง",
+  "en": "Seating Arrangements",
+  "tier": 2,
+  "dir": "Mock_11/6",
+  "samples": 6
+ },
+ "30": {
+  "title": "เลือก menu",
+  "en": "Menu Choice",
+  "tier": 2,
+  "dir": "Mock_10/5",
+  "samples": 6
+ },
+ "31": {
+  "title": "ชนิดของสามเหลี่ยม",
+  "en": "Triangle Type",
+  "tier": 1,
+  "dir": "Mock_11/2",
+  "samples": 6
+ },
+ "32": {
+  "title": "เส้นตรงสองเส้น",
+  "en": "Two Lines",
+  "tier": 2,
+  "dir": "Mock_9/8",
+  "samples": 6
+ },
+ "33": {
+  "title": "สามเหลี่ยมจากจุด",
+  "en": "Triangles from Points",
+  "tier": 2,
+  "dir": "Mock_15/6",
+  "samples": 6
+ },
+ "34": {
+  "title": "สี่เหลี่ยมสองรูป",
+  "en": "Two Rectangles",
+  "tier": 2,
+  "dir": "Mock_8/7",
+  "samples": 6
+ },
+ "35": {
+  "title": "matrix สมมาตร",
+  "en": "Symmetric Matrix",
+  "tier": 1,
+  "dir": "Mock_12/1",
+  "samples": 5
+ },
+ "36": {
+  "title": "Determinant",
+  "en": "Determinant",
+  "tier": 2,
+  "dir": "Mock_9/5",
+  "samples": 6
+ },
+ "37": {
+  "title": "นับเส้นทางเดิน",
+  "en": "Counting Walks",
+  "tier": 2,
+  "dir": "Mock_13/6",
+  "samples": 5
+ },
+ "38": {
+  "title": "วันแม่",
+  "en": "Mother's Day",
+  "tier": 1,
+  "dir": "Mock_1/2",
+  "samples": 6
+ },
+ "39": {
+  "title": "ปฏิทินและเลขดวง",
+  "en": "Calendar and Lucky Number",
+  "tier": 2,
+  "dir": "Mock_13/4",
+  "samples": 6
+ },
+ "40": {
+  "title": "ภาษีเงินได้ขั้นบันได",
+  "en": "Progressive Income Tax",
+  "tier": 1,
+  "dir": "Mock_1/8",
+  "samples": 5
+ },
+ "41": {
+  "title": "คำนำหน้าชื่อ",
+  "en": "Name Title",
+  "tier": 1,
+  "dir": "Mock_7/1",
+  "samples": 6
+ },
+ "42": {
+  "title": "ประมูลการกุศล",
+  "en": "Charity Auction",
+  "tier": 1,
+  "dir": "Mock_2/2",
+  "samples": 6
+ },
+ "43": {
+  "title": "ค่าจอดรถ",
+  "en": "Parking Fee",
+  "tier": 2,
+  "dir": "Mock_4/2",
+  "samples": 6
+ },
+ "44": {
+  "title": "มุมเข็มนาฬิกา",
+  "en": "Clock Angle",
+  "tier": 2,
+  "dir": "Mock_7/2",
+  "samples": 5
+ },
+ "46": {
+  "title": "ตู้ขายน้ำ",
+  "en": "Vending Machine",
+  "tier": 2,
+  "dir": "Mock_3/8",
+  "samples": 6
+ },
+ "47": {
+  "title": "นับแต้ม badminton",
+  "en": "Badminton Scoring",
+  "tier": 2,
+  "dir": "Mock_8/4",
+  "samples": 6
+ },
+ "48": {
+  "title": "คะแนน bowling",
+  "en": "Bowling Score",
+  "tier": 3,
+  "dir": "Mock_11/8",
+  "samples": 6
+ },
+ "50": {
+  "title": "ลูกเต๋า",
+  "en": "Dice Faces",
+  "tier": 1,
+  "dir": "Mock_2/3",
+  "samples": 6
+ },
+ "51": {
+  "title": "ข้าวหลามตัดตัวอักษร",
+  "en": "Letter Diamonds",
+  "tier": 2,
+  "dir": "Mock_3/7",
+  "samples": 6
+ },
+ "52": {
+  "title": "หินย้อย",
+  "en": "Stalactites",
+  "tier": 2,
+  "dir": "Mock_12/3",
+  "samples": 6
+ },
+ "53": {
+  "title": "graph สัญญาณ digital",
+  "en": "Digital Signal Graph",
+  "tier": 2,
+  "dir": "Mock_5/6",
+  "samples": 6
+ },
+ "54": {
+  "title": "ติดตามการเรียงลำดับ",
+  "en": "Sort Trace",
+  "tier": 2,
+  "dir": "Mock_7/4",
+  "samples": 6
+ },
+ "55": {
+  "title": "สถิติคะแนน",
+  "en": "Score Statistics",
+  "tier": 1,
+  "dir": "Mock_7/5",
+  "samples": 6
+ },
+ "56": {
+  "title": "จับคู่เลขมงคล",
+  "en": "Lucky Pair",
+  "tier": 1,
+  "dir": "Mock_8/1",
+  "samples": 6
+ },
+ "57": {
+  "title": "ปริมาตรน้ำท่วม",
+  "en": "Flood Volume",
+  "tier": 2,
+  "dir": "Mock_14/6",
+  "samples": 6
+ },
+ "58": {
+  "title": "หมุนตาราง",
+  "en": "Rotate the Grid",
+  "tier": 1,
+  "dir": "Mock_7/6",
+  "samples": 6
+ },
+ "59": {
+  "title": "สำรวจตาราง",
+  "en": "Array Explorer",
+  "tier": 1,
+  "dir": "Mock_14/2",
+  "samples": 6
+ },
+ "60": {
+  "title": "กวาดระเบิด",
+  "en": "Minesweeper",
+  "tier": 1,
+  "dir": "Mock_6/1",
+  "samples": 6
+ },
+ "62": {
+  "title": "พื้นที่ผิวกล่อง",
+  "en": "Surface Area",
+  "tier": 2,
+  "dir": "Mock_15/3",
+  "samples": 6
+ },
+ "63": {
+  "title": "ตรวจ Sudoku",
+  "en": "Sudoku Checker",
+  "tier": 1,
+  "dir": "Mock_5/4",
+  "samples": 6
+ },
+ "64": {
+  "title": "ตรวจกระดาน XO",
+  "en": "Tic-Tac-Toe Checker",
+  "tier": 2,
+  "dir": "Mock_9/6",
+  "samples": 6
+ },
+ "65": {
+  "title": "Game of Life",
+  "en": "Game of Life",
+  "tier": 2,
+  "dir": "Mock_15/4",
+  "samples": 6
+ },
+ "66": {
+  "title": "2048",
+  "en": "2048 Game",
+  "tier": 2,
+  "dir": "Mock_12/8",
+  "samples": 6
+ },
+ "68": {
+  "title": "Othello",
+  "en": "Othello",
+  "tier": 3,
+  "dir": "Mock_13/8",
+  "samples": 6
+ },
+ "69": {
+  "title": "ระเบิดลูกโซ่",
+  "en": "Chain Bombs",
+  "tier": 3,
+  "dir": "Mock_12/7",
+  "samples": 5
+ },
+ "70": {
+  "title": "สถิติตัวอักษร",
+  "en": "Letter Statistics",
+  "tier": 1,
+  "dir": "Mock_15/1",
+  "samples": 6
+ },
+ "71": {
+  "title": "Anagram อนุโลม",
+  "en": "Almost Anagram",
+  "tier": 1,
+  "dir": "Mock_1/1",
+  "samples": 6
+ },
+ "72": {
+  "title": "บีบอัดข้อความ",
+  "en": "Run-Length Encoding",
+  "tier": 1,
+  "dir": "Mock_12/2",
+  "samples": 6
+ },
+ "73": {
+  "title": "ค้นหาและแทนที่",
+  "en": "Find and Replace",
+  "tier": 1,
+  "dir": "Mock_14/4",
+  "samples": 6
+ },
+ "75": {
+  "title": "ถอดรหัส Caesar",
+  "en": "Caesar Decoder",
+  "tier": 2,
+  "dir": "Mock_13/2",
+  "samples": 6
+ },
+ "76": {
+  "title": "Palindrome ยาวสุด",
+  "en": "Longest Palindromic Substring",
+  "tier": 2,
+  "dir": "Mock_6/4",
+  "samples": 6
+ },
+ "77": {
+  "title": "คำที่ต่างกันหนึ่งตัวอักษร",
+  "en": "One Edit Away",
+  "tier": 2,
+  "dir": "Mock_10/6",
+  "samples": 6
+ },
+ "78": {
+  "title": "จัดย่อหน้า",
+  "en": "Text Justification",
+  "tier": 3,
+  "dir": "Mock_5/8",
+  "samples": 6
+ },
+ "79": {
+  "title": "อ่านตัวเลขเป็นภาษาไทย",
+  "en": "Thai Number Words",
+  "tier": 3,
+  "dir": "Mock_8/6",
+  "samples": 6
+ },
+ "80": {
+  "title": "หอคอย Hanoi",
+  "en": "Tower of Hanoi",
+  "tier": 2,
+  "dir": "Mock_14/3",
+  "samples": 5
+ },
+ "81": {
+  "title": "เลขกลับหัว",
+  "en": "Strobogrammatic Numbers",
+  "tier": 2,
+  "dir": "Mock_4/3",
+  "samples": 6
+ },
+ "82": {
+  "title": "ลำดับที่ของการเรียงสับเปลี่ยน",
+  "en": "Permutation Rank",
+  "tier": 2,
+  "dir": "Mock_2/6",
+  "samples": 6
+ },
+ "83": {
+  "title": "ต่อเลขฐานสอง",
+  "en": "Binary Concatenation",
+  "tier": 2,
+  "dir": "Mock_10/3",
+  "samples": 6
+ },
+ "84": {
+  "title": "ถังสี",
+  "en": "Paint Bucket",
+  "tier": 2,
+  "dir": "Mock_4/5",
+  "samples": 6
+ },
+ "85": {
+  "title": "เติมเครื่องหมายให้ได้เป้าหมาย",
+  "en": "Digits to Target",
+  "tier": 3,
+  "dir": "Mock_8/8",
+  "samples": 6
+ },
+ "86": {
+  "title": "จัดอันดับ",
+  "en": "Ranking",
+  "tier": 2,
+  "dir": "Mock_14/1",
+  "samples": 5
+ },
+ "87": {
+  "title": "ตารางคะแนน football",
+  "en": "League Table",
+  "tier": 2,
+  "dir": "Mock_3/4",
+  "samples": 6
+ },
+ "88": {
+  "title": "ตารางเรียนชน",
+  "en": "Timetable Clash",
+  "tier": 2,
+  "dir": "Mock_9/4",
+  "samples": 6
+ },
+ "89": {
+  "title": "นับคะแนนเลือกตั้ง",
+  "en": "Election Count",
+  "tier": 2,
+  "dir": "Mock_11/1",
+  "samples": 5
+ },
+ "90": {
+  "title": "บันทึกการมาเรียน",
+  "en": "Attendance",
+  "tier": 1,
+  "dir": "Mock_6/2",
+  "samples": 6
+ },
+ "91": {
+  "title": "บัญชีธนาคาร",
+  "en": "Bank Accounts",
+  "tier": 2,
+  "dir": "Mock_4/7",
+  "samples": 5
+ },
+ "92": {
+  "title": "ขบวนรถไฟ",
+  "en": "Train Cars",
+  "tier": 2,
+  "dir": "Mock_5/3",
+  "samples": 6
+ },
+ "93": {
+  "title": "วงเล็บสมดุล",
+  "en": "Balanced Brackets",
+  "tier": 2,
+  "dir": "Mock_10/2",
+  "samples": 5
+ },
+ "94": {
+  "title": "คำนวณนิพจน์ postfix",
+  "en": "Postfix Evaluation",
+  "tier": 2,
+  "dir": "Mock_2/7",
+  "samples": 6
+ },
+ "95": {
+  "title": "พิมพ์ข้อความกับ Undo/Redo",
+  "en": "Undo and Redo",
+  "tier": 3,
+  "dir": "Mock_15/7",
+  "samples": 6
+ },
+ "96": {
+  "title": "สับรางรถไฟ",
+  "en": "Rails",
+  "tier": 3,
+  "dir": "Mock_13/5",
+  "samples": 5
+ },
+ "97": {
+  "title": "queue ร้านข้าวมันไก่",
+  "en": "Two Cooks Queue",
+  "tier": 2,
+  "dir": "Mock_9/1",
+  "samples": 5
+ },
+ "98": {
+  "title": "queue ของเครื่องพิมพ์",
+  "en": "Printer Queue",
+  "tier": 2,
+  "dir": "Mock_1/4",
+  "samples": 6
+ },
+ "99": {
+  "title": "game งู",
+  "en": "Snake",
+  "tier": 3,
+  "dir": "Mock_11/7",
+  "samples": 6
+ }
+}

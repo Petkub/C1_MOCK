@@ -1,0 +1,24 @@
+name: regression
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.x"]
+        include:
+          - os: ubuntu-22.04        # oldest supported Python (3.7 is not available on the newer images)
+            python: "3.7"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Compiler
+        run: g++ --version
+      - name: Regression tests
+        run: python tests/run_regression.py

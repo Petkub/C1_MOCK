@@ -1,0 +1,8 @@
+7
+OPEN bob
+OPEN bo
+DEPOSIT bob 9
+TRANSFER bo al 1
+TRANSFER al bo 1
+TRANSFER bob bo 10
+TRANSFER bob bo 9

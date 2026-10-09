@@ -1,0 +1,5 @@
+4
+OPEN a
+CLOSE a
+CLOSE a
+TRANSFER a b 5

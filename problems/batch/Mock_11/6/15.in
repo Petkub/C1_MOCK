@@ -1,0 +1,11 @@
+8 10
+B next D
+B before E
+G end
+C before G
+D next G
+D notnext H
+C before B
+B before E
+A before D
+B before E

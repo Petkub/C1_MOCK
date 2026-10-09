@@ -1,0 +1,7 @@
+7 6
+D end
+G end
+C notnext A
+A next B
+E before D
+G next F

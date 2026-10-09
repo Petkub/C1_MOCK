@@ -1,0 +1,2 @@
+# keep every file byte-exact on all platforms (CRLF judge.bat, test data, SHA-256 checks)
+* -text

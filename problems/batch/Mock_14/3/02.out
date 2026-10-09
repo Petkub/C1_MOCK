@@ -1,0 +1,5 @@
+disk 1: A -> B
+disk 2: A -> C
+disk 1: B -> C
+TOTAL 3
+DISK 2 MOVES 1

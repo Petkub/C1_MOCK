@@ -1,0 +1,6 @@
+{}
+{i} {m} {p} {s}
+{i,m} {i,p} {i,s} {m,p} {m,s} {p,s}
+{i,m,p} {i,m,s} {i,p,s} {m,p,s}
+{i,m,p,s}
+16

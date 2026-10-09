@@ -1,0 +1,9 @@
+8
+TYPE hello
+TYPE world
+DELETE 3
+PRINT
+UNDO
+PRINT
+UNDO
+PRINT
