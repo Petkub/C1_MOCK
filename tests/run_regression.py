@@ -58,15 +58,20 @@ def judge_sample(src, problem, full):
     st = judge.Style(color=False, ascii_only=True, tty=False)
     tmp = tempfile.mkdtemp(prefix="judge_")
     try:
-        exe, _, _ = judge.compile_source(src, tmp)
+        exe, _, _, _ = judge.compile_source(src, tmp)
         if not exe:
             return "CE", 0
         with contextlib.redirect_stdout(io.StringIO()):
             results, _, total = judge.run_tests(exe, pdir, st, 1.0, 0, not full, quiet=True)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
-    bad = [v for _, v, _ in results if v != "AC"]
+    bad = [r[1] for r in results if r[1] != "AC"]
+    peaks = [r[3] for r in results if r[3] is not None]
+    PEAK[0] = max(peaks) / (1024 * 1024) if peaks else None
     return (bad[0] if bad else "AC"), judge.compute_score(results, total)[0]
+
+
+PEAK = [None]      # peak memory (MB) seen by the last judge_sample call
 
 
 def test_samples():
@@ -79,6 +84,8 @@ def test_samples():
         ok = verdict == want["verdict"] and (not full or score == want["score"])
         got = verdict + (f" {score}" if full else "")
         check(ok, f"{name:<28} {want['verdict']}", f"got {got}")
+        if name.endswith("_ok.cpp"):      # a small program must be measured as small (not the judge's own image)
+            check(PEAK[0] is not None and 0.1 < PEAK[0] < 16, f"peak memory of a small program is measured: {PEAK[0]} MB")
 
 
 # ----------------------------------------------------------------------------- 2. command line
@@ -95,6 +102,17 @@ def test_cli():
     wa_cpp = os.path.join(SAMPLES, "batch", "primes_offbyone.cpp")
     code, out, _ = run_judge([ok_cpp, "1-3", "--no-color"])
     check(code == 0 and "ACCEPTED" in out, "judge.py primes_ok.cpp 1-3", f"exit {code}\n{out}")
+    code, out, _ = run_judge([os.path.join(SAMPLES, "batch", "primes_throw.cpp"), "1-3", "--no-color", "--stop"])
+    check("out_of_range" in out and "stderr" in out, "RE shows the program's stderr (out_of_range)", out)
+    code, out, _ = run_judge([os.path.join(SAMPLES, "batch", "primes_warn.cpp"), "1-3", "--no-color", "--stop"])
+    check("g++ warning" in out and "unused" in out, "warnings are shown after Compiled", out)
+    code, out, _ = run_judge([ok_cpp, "1-3", "--no-color", "--stop"])
+    check("warning" not in out and "Memory  peak" in out and "64 MB per test" in out,
+          "clean program: no warnings, memory line, limit in header", out)
+    code, out, _ = run_judge([ok_cpp, "1-3", "--no-color", "--stop", "--ml", "1"])
+    check("Memory Limit Exceeded" in out and "limit is 1 MB" in out, "--ml 1 makes a small program MLE", out)
+    code, out, _ = run_judge(["--ml", "0"])
+    check(code == 2 and "--ml must be" in out, "judge.py --ml 0 is rejected", f"exit {code}\n{out}")
     code, out, plain = run_judge([wa_cpp, "1-3", "--ascii", "--no-color"])
     check(code == 0 and "First failure" in out and plain, "judge.py --ascii shows the failure, ASCII only",
           f"exit {code}, ascii={plain}\n{out}")

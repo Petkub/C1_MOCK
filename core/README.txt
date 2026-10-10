@@ -14,7 +14,7 @@ From the Judge folder (or use ../Judge/judge.py from a set folder):
   python3 judge.py --set 3 FOLDER         judge a whole set (files 1.cpp ... 8.cpp in FOLDER)
   python3 judge.py my.cpp 3-5             judge one solution: set 3, problem 5
 
-Options: --tl SECONDS  --diff N  --stop  --ascii  --no-color
+Options: --tl SECONDS  --ml MB (default 64)  --diff N  --stop  --ascii  --no-color
 Test data: problems/batch/Mock_K/P/*.in|out (the first 5 or 6 tests are the samples shown in the statement).
 Windows: VS Code's Ctrl+Shift+B runs judge.cmd (uses the py launcher if installed, else python).
 Updates: the judge updates itself from GitHub when online (checked at most once every 10 minutes; your .cpp files

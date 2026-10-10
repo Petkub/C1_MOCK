@@ -117,8 +117,10 @@ release. You only need a new release for new students (or new sets); existing st
 - "The judge says I have the old version": ask them to run `python3 ../Judge/judge.py --update`. Its message says
   why it cannot update (e.g. a school firewall, or a macOS Python without certificates:
   `CERTIFICATE_VERIFY_FAILED` → run "Install Certificates.command" from the Python folder).
-- "My correct code gets Runtime Error / Wrong Answer": ask for the problem, the test number and the line printed
-  under *First failure* (e.g. `your program crashed (signal 11 SIGSEGV: invalid memory access)`). Then run their
+- "My correct code gets Runtime Error / Wrong Answer": ask for the problem, the test number and the lines printed
+  under *First failure* (e.g. `your program crashed (signal 11 SIGSEGV: invalid memory access)` and the program's
+  own stderr below it, such as `terminate called after throwing ... out_of_range`), plus any g++ warnings printed
+  after "Compiled". Then run their
   file here: `python3 core/judge.py their.cpp K-N`. The judge compiles with `-O2`, which exposes uninitialised
   variables and out-of-bounds reads that pass on the student's own compile.
 - To check the judge itself, run every official solution: they must all score 100

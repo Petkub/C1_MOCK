@@ -482,11 +482,11 @@
 ]
 },
 "files": {
-"CHANGELOG.txt": "c8646f50842e7b4ab7ea3cc15b3da15eb9eebb0fcdeaec55cdc22ea9454e15a4",
-"README.txt": "bea19effb07a6d112362266a0851117186ff72ba97c3129b4bd6e32fe0b9f964",
+"CHANGELOG.txt": "23c6f19d0f6f2739da5df170edb96b93c96cb685d395436515e627c9be3cdf6a",
+"README.txt": "d0e97da728637b9be3226c2bbe85d390258d789ffac336da4c50dc4d0c7ae7c2",
 "include/bits/stdc++.h": "1545f1f4b55b3acb866effca73203f3a9131773f147331cbf4e983ebf36d6cc9",
 "judge.cmd": "84038f11038804a85edc6df3e3c64f10a72891fad6b98ac7a7ae08e358ed7f44",
-"judge.py": "73836dc0c4cd9a8ced8d0ab305cc844de97f9d84a33d2b7c2144018dca0dc781",
+"judge.py": "129588680109c311b269efcb1af9398dab3737d830b6c589d17c2873e33c6d9a",
 "problems/batch/Mock_1/1/01.in": "7da4606de7fa8bb5181beea4940deefacde4b87ba5431fabd09a4e315f378d95",
 "problems/batch/Mock_1/1/01.out": "f458f6d86129f5c0ab6c964238772fbe286c10ee24ae1f68f9064b710a2cc586",
 "problems/batch/Mock_1/1/02.in": "5324ba1fb0bb03929244b7a54770c8a14523f2cc4974eb1529f3238ef8059653",
@@ -4397,7 +4397,7 @@
 "student/set_files/judge.bat"
 ],
 "README.txt": [
-"a943e4fc72d8e402226ced2a5682d731994a27f75740a0d9c3f2ad581ebce498",
+"735102d6e33412fc1ab08b249115e9879e6da1c33c349425fd3fc762e2c0c6aa",
 "student/README.txt"
 ]
 },
@@ -4405,5 +4405,5 @@
 "": "core/",
 "problems/": "problems/"
 },
-"version": "1.5"
+"version": "1.6"
 }

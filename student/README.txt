@@ -27,7 +27,7 @@ macOS (ทำครั้งเดียว)
       sudo mkdir -p /usr/local/include/bits
       sudo cp Judge/include/bits/stdc++.h /usr/local/include/bits/
 
-ตัวเลือกเพิ่มเติม: --tl 2 (เวลาต่อชุดทดสอบ) --stop (หยุดที่ชุดแรกที่ผิด) --ascii --no-color
+ตัวเลือกเพิ่มเติม: --tl 2 (เวลาต่อชุดทดสอบ) --ml 128 (หน่วยความจำ MB, ปกติ 64) --stop (หยุดที่ชุดแรกที่ผิด) --ascii --no-color
 ดูรายชื่อโจทย์ทั้งหมด: python3 ../Judge/judge.py --list
 ถ้าคัดลอกโฟลเดอร์ ให้ตั้งชื่อเป็น Mock_K เสมอ (judge ดูเลขชุดจากชื่อโฟลเดอร์) หรือระบุเอง: python3 ../Judge/judge.py 5.cpp 3-5
 

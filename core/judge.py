@@ -15,6 +15,7 @@ Usage (anywhere)
 
 Options
   --tl SECONDS     time limit per test (default 1.0)
+  --ml MB          memory limit per test (default: the problem's, usually 64 MB)
   --diff N         show up to N differing lines for the first failed test (default 3, 0 = off)
   --stop           stop at the first failed test
   --ascii          plain ASCII drawing (for old consoles)
@@ -33,6 +34,7 @@ import os
 import re
 import shutil
 import signal
+import struct
 import subprocess
 import sys
 import tempfile
@@ -51,6 +53,9 @@ PY = "python" if os.name == "nt" else "python3"
 OUTPUT_LIMIT = 64 * 1024 * 1024     # bytes of stdout kept per test; more than this = Wrong Answer
 COMPILE_TIMEOUT = 60                # seconds
 STACK_BYTES = 256 * 1024 * 1024     # stack size for the judged program (like most online judges)
+MEMORY_LIMIT_MB = 64                # default memory limit per test (the statements); problems.json "ml" overrides
+STDERR_KEEP = 8 * 1024              # bytes of the judged program's stderr kept (shown after a crash)
+WARNINGS_SHOWN = 6                  # g++ warning lines printed after a successful compile
 
 # ----------------------------------------------------------------------------- styling
 class Style:
@@ -153,6 +158,7 @@ VERDICT = {
     "WA": ("Wrong Answer", "red"),
     "TLE": ("Time Limit Exceeded", "yellow"),
     "RE": ("Runtime Error", "magenta"),
+    "MLE": ("Memory Limit Exceeded", "blue"),
 }
 
 ASCII_MAP = {"·": "-", "…": "...", "→": "->", "‘": "'", "’": "'", "“": '"', "”": '"', "–": "-", "—": "-"}
@@ -313,9 +319,16 @@ SUBTASKS = [None]  # [{"points": 40, "tests": ["01", ...]}, ...] or None (score 
 TEST_NAMES = [[]]  # names of all tests of the problem being judged (also those --stop did not run)
 
 
+MEM_LIMIT = [MEMORY_LIMIT_MB]   # MB, of the problem being judged
+ML_OPTION = [None]              # --ml MB overrides the problem's limit
+
+
 def set_sample_count(meta, num):
-    SAMPLE_COUNT[0] = int(meta.get(num, {}).get("samples", 6)) if num is not None else 6
-    SUBTASKS[0] = meta.get(num, {}).get("subtasks") if num is not None else None
+    m = meta.get(num, {}) if num is not None else {}
+    SAMPLE_COUNT[0] = int(m.get("samples", 6))
+    SUBTASKS[0] = m.get("subtasks")
+    ml = m.get("ml", MEMORY_LIMIT_MB)
+    MEM_LIMIT[0] = ML_OPTION[0] or (ml if isinstance(ml, int) and ml > 0 else MEMORY_LIMIT_MB)
 
 
 def subtasks_usable():
@@ -364,10 +377,13 @@ def is_sample(name):
 
 # ----------------------------------------------------------------------------- core
 def compile_source(src, outdir):
-    """Compile src into outdir. Returns (exe or None, seconds, error lines)."""
+    """Compile src into outdir. Returns (exe or None, seconds, error lines, warning lines)."""
     exe = os.path.join(outdir, "prog" + (".exe" if os.name == "nt" else ""))
     src_abs = os.path.abspath(src)
-    cmd = ["g++", "-O2", "-std=c++17", "-o", exe, src_abs]
+    # -Wall: an uninitialized variable or an out-of-bounds index can work on the student's own compile and fail
+    # here (-O2); the warning is shown after "Compiled". -Wno-sign-compare, -Wno-char-subscripts: i < v.size() and
+    # count[c] are everywhere in contest code and harmless
+    cmd = ["g++", "-O2", "-std=c++17", "-Wall", "-Wno-sign-compare", "-Wno-char-subscripts", "-o", exe, src_abs]
     if os.name == "nt":
         # Windows default stack is only 1 MB. -static: the program does not need libstdc++-6.dll at run time,
         # so another (incompatible) copy of that DLL earlier in PATH cannot make every test crash
@@ -387,13 +403,13 @@ def compile_source(src, outdir):
             p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=env,
                                  start_new_session=(os.name != "nt"))
         except FileNotFoundError:
-            return None, 0, ["g++ not found. Please install a C++ compiler and add it to PATH."]
+            return None, 0, ["g++ not found. Please install a C++ compiler and add it to PATH."], []
         try:
             out, _ = p.communicate(timeout=COMPILE_TIMEOUT)
         except subprocess.TimeoutExpired:
             kill_tree(p)
             p.communicate()
-            return None, COMPILE_TIMEOUT, [f"The compiler did not finish within {COMPILE_TIMEOUT} s."]
+            return None, COMPILE_TIMEOUT, [f"The compiler did not finish within {COMPILE_TIMEOUT} s."], []
         except BaseException:                    # Ctrl-C
             kill_tree(p)
             p.wait()
@@ -404,22 +420,44 @@ def compile_source(src, outdir):
             continue
         break
     dt = time.perf_counter() - t0
+    text = compiler_text(out, src_abs)
     if p.returncode != 0 or not os.path.exists(exe):
-        try:
-            text = out.decode("utf-8")
-        except UnicodeDecodeError:          # e.g. Windows g++ printing a Thai path in the ANSI code page
-            text = out.decode(locale.getpreferredencoding(False), "replace")
-        d = os.path.dirname(src_abs)
-        text = text.replace(d + os.sep, "")
-        if os.name == "nt":
-            text = text.replace(d.replace("\\", "/") + "/", "")
         msg = text.strip().splitlines()
         if "bits/stdc++.h" in text and "not found" in text:
             msg = ["Hint: your g++ is clang (macOS), which has no <bits/stdc++.h>, and the judge's",
                    "fallback (folder include/ next to judge.py) is missing. Include the headers you need",
                    "(<iostream>, <vector>, ...) or install GNU g++.", ""] + msg
-        return None, dt, msg or [f"g++ exited with code {p.returncode}"]
-    return exe, dt, []
+        return None, dt, msg or [f"g++ exited with code {p.returncode}"], []
+    return exe, dt, [], [ln for ln in text.splitlines() if ": warning:" in ln]
+
+
+def compiler_text(out, src_abs):
+    """g++ output as text, without the folder of the source file."""
+    try:
+        text = out.decode("utf-8")
+    except UnicodeDecodeError:          # e.g. Windows g++ printing a Thai path in the ANSI code page
+        text = out.decode(locale.getpreferredencoding(False), "replace")
+    d = os.path.dirname(src_abs)
+    text = text.replace(d + os.sep, "")
+    if os.name == "nt":
+        text = text.replace(d.replace("\\", "/") + "/", "")
+    return text
+
+
+def print_warnings(st, warns, quiet=False):
+    """The g++ -Wall warnings of a program that compiled."""
+    if not warns:
+        return
+    n = len(warns)
+    head = f"{n} g++ warning{'s' if n != 1 else ''}"
+    if quiet:
+        print("  " + st.dim(head))
+        return
+    print("  " + st.yellow(head) + st.dim("  (read them: such code can pass here and fail on the real grader)"))
+    for ln in warns[:WARNINGS_SHOWN]:
+        print("    " + st.dim(clip(ln.replace(" warning: ", " "), 100)))
+    if n > WARNINGS_SHOWN:
+        print("    " + st.dim(f"... {n - WARNINGS_SHOWN} more"))
 
 
 def print_compile_error(st, msg):
@@ -473,7 +511,7 @@ def start_program(exe):
     an antivirus scan of a new .exe on Windows): wait a little and try again instead of failing."""
     for wait in (LAUNCH_WAITS if exe not in UNSTARTABLE else ()) + (None,):
         try:
-            return subprocess.Popen([exe], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+            return subprocess.Popen([exe], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except OSError as e:
             LAUNCH_ERROR[0] = e.strerror or str(e)
             if wait is None or not os.path.exists(exe):
@@ -482,13 +520,108 @@ def start_program(exe):
             time.sleep(wait)
 
 
+def exit_code(status):
+    """returncode of a waited-for POSIX child: -signal when killed by a signal."""
+    return -os.WTERMSIG(status) if os.WIFSIGNALED(status) else os.WEXITSTATUS(status)
+
+
+def wait_program(p, timeout):
+    """Wait for the judged program like p.wait(timeout) and return its peak memory in bytes (None if unknown).
+    Windows: GetProcessMemoryInfo on the handle after the exit (exact). Linux / macOS: the program's own
+    high-water mark is read every millisecond while it runs (/proc VmHWM, proc_pid_rusage); ru_maxrss from
+    wait4 is only a fallback, because it also counts the judge's own image before the exec."""
+    if os.name == "nt":
+        p.wait(timeout=timeout)
+        return windows_peak_memory(p)
+    read = linux_peak_memory if sys.platform.startswith("linux") else (
+        mac_peak_memory if sys.platform == "darwin" else lambda pid: None)
+    deadline = None if timeout is None else time.perf_counter() + timeout
+    delay = 0.0002
+    peak = None
+    while True:
+        m = read(p.pid)
+        if m is not None and (peak is None or m > peak):
+            peak = m
+        pid, status, ru = os.wait4(p.pid, os.WNOHANG)
+        if pid == p.pid:
+            p.returncode = exit_code(status)
+            if peak is None:
+                peak = ru.ru_maxrss * (1 if sys.platform == "darwin" else 1024)      # macOS: bytes, Linux: KB
+            return peak
+        if deadline is not None and time.perf_counter() >= deadline:
+            raise subprocess.TimeoutExpired(p.args, timeout)
+        time.sleep(delay)
+        delay = min(delay * 2, 0.001)
+
+
+def linux_peak_memory(pid):
+    """VmHWM (peak resident size) of a running process, bytes."""
+    try:
+        with open(f"/proc/{pid}/status", "rb") as f:
+            for line in f:
+                if line.startswith(b"VmHWM:"):
+                    return int(line.split()[1]) * 1024
+    except (OSError, ValueError, IndexError):
+        pass
+    return None
+
+
+MAC_RUSAGE = [None]     # (libproc, buffer) once loaded; False when proc_pid_rusage is not usable
+
+
+def mac_peak_memory(pid):
+    """ri_lifetime_max_phys_footprint of a running process (proc_pid_rusage, RUSAGE_INFO_V4), bytes."""
+    if MAC_RUSAGE[0] is False:
+        return None
+    try:
+        import ctypes
+        if MAC_RUSAGE[0] is None:
+            lib = ctypes.CDLL("/usr/lib/libproc.dylib")
+            lib.proc_pid_rusage.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_void_p]
+            MAC_RUSAGE[0] = (lib, ctypes.create_string_buffer(16 + 64 * 8))
+        lib, buf = MAC_RUSAGE[0]
+        if lib.proc_pid_rusage(pid, 4, buf) != 0:
+            return None
+        fields = struct.unpack_from("<40Q", buf, 16)         # after the 16-byte uuid
+        resident, lifetime_max = fields[6], fields[28]
+        if 0 < lifetime_max < (1 << 44) and lifetime_max >= resident:
+            return int(lifetime_max)
+    except Exception:
+        MAC_RUSAGE[0] = False
+    return None
+
+
+def windows_peak_memory(p):
+    """PeakWorkingSetSize of a finished program (its handle is still open), or None."""
+    try:
+        import ctypes
+        from ctypes import wintypes
+
+        class Counters(ctypes.Structure):
+            _fields_ = [("cb", wintypes.DWORD), ("PageFaultCount", wintypes.DWORD)] + [
+                (f, ctypes.c_size_t) for f in ("PeakWorkingSetSize", "WorkingSetSize", "QuotaPeakPagedPoolUsage",
+                                               "QuotaPagedPoolUsage", "QuotaPeakNonPagedPoolUsage",
+                                               "QuotaNonPagedPoolUsage", "PagefileUsage", "PeakPagefileUsage")]
+        fn = ctypes.windll.psapi.GetProcessMemoryInfo
+        fn.argtypes = [wintypes.HANDLE, ctypes.c_void_p, wintypes.DWORD]
+        c = Counters()
+        c.cb = ctypes.sizeof(c)
+        if fn(int(p._handle), ctypes.byref(c), c.cb):
+            return int(c.PeakWorkingSetSize)
+    except Exception:
+        pass
+    return None
+
+
 def run_program(exe, data, hard_limit):
-    """Run exe with stdin=data. Returns (stdout bytes, returncode or None if killed, seconds, output_overflow)."""
+    """Run exe with stdin=data. Returns (stdout bytes, returncode or None if killed, seconds, output_overflow,
+    peak memory in bytes or None, last bytes of stderr)."""
     p = start_program(exe)
     if p is None:                # e.g. the .exe was removed or blocked by an antivirus program
-        return b"", LAUNCH_FAILED, 0.0, False
+        return b"", LAUNCH_FAILED, 0.0, False, None, b""
     t0 = time.perf_counter()
     chunks = []
+    err = bytearray()
     state = {"size": 0, "overflow": False}
 
     def feed():
@@ -519,30 +652,47 @@ def run_program(exe, data, hard_limit):
             state["size"] += len(b)
             chunks.append(b)
 
+    def drain_err():
+        while True:
+            try:
+                b = p.stderr.read1(1 << 16)
+            except (OSError, ValueError):
+                break
+            if not b:
+                break
+            err.extend(b)
+            if len(err) > 2 * STDERR_KEEP:     # keep only the end (the exception message is there)
+                del err[:-STDERR_KEEP]
+
     tw = threading.Thread(target=feed, daemon=True)
     tr = threading.Thread(target=drain, daemon=True)
+    te = threading.Thread(target=drain_err, daemon=True)
     tw.start()
     tr.start()
+    te.start()
     killed = False
+    peak = None
     try:
-        p.wait(timeout=hard_limit)
+        peak = wait_program(p, hard_limit)
     except subprocess.TimeoutExpired:
         killed = True
         p.kill()
-        p.wait()
+        peak = wait_program(p, None)
     finally:
         if p.poll() is None:     # e.g. Ctrl-C
             p.kill()
             p.wait()
     dt = time.perf_counter() - t0
     tr.join(5)
+    te.join(5)
     tw.join(5)
-    if not tr.is_alive():    # still alive only if a process started by the program keeps stdout open
-        try:
-            p.stdout.close()
-        except OSError:
-            pass
-    return b"".join(chunks), (None if killed else p.returncode), dt, state["overflow"]
+    for stream, t in ((p.stdout, tr), (p.stderr, te)):
+        if not t.is_alive():    # still alive only if a process started by the program keeps the pipe open
+            try:
+                stream.close()
+            except OSError:
+                pass
+    return b"".join(chunks), (None if killed else p.returncode), dt, state["overflow"], peak, bytes(err[-STDERR_KEEP:])
 
 
 def run_tests(exe, pdir, st, tl, show_diff, stop, quiet=False):
@@ -562,8 +712,10 @@ def run_tests(exe, pdir, st, tl, show_diff, stop, quiet=False):
         with open(fin, "rb") as f:
             data = f.read()
         for attempt in range(2):
-            got, code, dt, overflow = run_program(exe, data, hard)
-            if code is None and not overflow:
+            got, code, dt, overflow, peak, err = run_program(exe, data, hard)
+            if peak is not None and peak > MEM_LIMIT[0] * 1024 * 1024:
+                v = "MLE"
+            elif code is None and not overflow:
                 v = "TLE"
             elif overflow:
                 v = "WA"
@@ -580,9 +732,9 @@ def run_tests(exe, pdir, st, tl, show_diff, stop, quiet=False):
                 break
         if v == "TLE":
             dt = max(dt, tl)
-        results.append((name, v, dt))
+        results.append((name, v, dt, peak))
         if v != "AC" and first_fail is None:
-            first_fail = (name, v, fin, got, overflow, code)
+            first_fail = (name, v, fin, got, overflow, code, peak, err)
         if quiet:       # set mode: one character per test, printed as soon as it is known
             print(st.green(ch["ok"]) if v == "AC" else getattr(st, VERDICT[v][1])(v[0]), end="", flush=True)
         else:
@@ -744,7 +896,7 @@ def crash_reason(code):
 def show_failure(st, first_fail, show_diff):
     if not first_fail or show_diff <= 0:
         return
-    name, v, fin, got, overflow, code = first_fail
+    name, v, fin, got, overflow, code, peak, err = first_fail
     rule(st, f"First failure: test {name} · " + (f"sample {int(name)}" if is_sample(name) else "hidden"))
     label, col = VERDICT[v]
     exp = out = diffs = None
@@ -759,6 +911,8 @@ def show_failure(st, first_fail, show_diff):
         summary = diagnose(exp, out, diffs)
     elif v == "TLE":
         summary = "your program did not finish in time"
+    elif v == "MLE":
+        summary = f"your program used {peak / (1024 * 1024):.0f} MB, the limit is {MEM_LIMIT[0]} MB"
     elif code == LAUNCH_FAILED:
         summary = f"the judge could not start your program ({LAUNCH_ERROR[0]})"
     else:
@@ -771,8 +925,22 @@ def show_failure(st, first_fail, show_diff):
     if exp is not None:
         print()
         show_table(st, exp, out, diffs, show_diff, summary.startswith("only the spaces"))
+    if v == "RE":
+        show_stderr(st, err)
     print()
     print("  " + st.dim("Input  ") + rel_path(fin))
+
+
+def show_stderr(st, err, keep=5):
+    """The last lines the program wrote to stderr: an exception message, a failed assert, a debug print."""
+    lines = [ln for ln in err.decode("utf-8", "replace").replace("\r", "").split("\n") if ln.strip()]
+    if not lines:
+        return
+    print()
+    more = f" (last {keep} of {len(lines)} lines)" if len(lines) > keep else ""
+    print("  " + st.dim("your program's stderr" + more))
+    for ln in lines[-keep:]:
+        print("    " + st.magenta(clip("".join(visible_char(c) for c in ln[:300]), 100)))
 
 
 def first_diff(a, b):
@@ -831,13 +999,13 @@ def judge_one(src, pdir, num, meta, st, tl, show_diff, stop):
     head = [title(st, "POSN Camp 1 · Practice Judge"),
             f"Problem  {st.bold(label)}  {name}  " + (stars(st, tier) if tier else ""),
             f"Source   {clip(srcname, WIDTH - 4 - 9)}",
-            f"Limits   {tl:.1f} s per test"]
+            f"Limits   {tl:.1f} s · {MEM_LIMIT[0]} MB per test"]
     box(st, head, st.dim)
     print()
     print("  " + st.dim("Compiling ..."), end="" if st.tty else "\n", flush=True)
     tmp = tempfile.mkdtemp(prefix="judge_")
     try:
-        exe, ct, msg = compile_source(src, tmp)
+        exe, ct, msg, warns = compile_source(src, tmp)
         print("\r  " if st.tty else "  ", end="")
         if not exe:
             print_compile_error(st, msg)
@@ -847,6 +1015,7 @@ def judge_one(src, pdir, num, meta, st, tl, show_diff, stop):
             rule(st)
             return 0
         print(st.green("Compiled") + st.dim(f" in {ct:.2f} s"))
+        print_warnings(st, warns)
         print()
         results, first_fail, total = run_tests(exe, pdir, st, tl, show_diff, stop)
     finally:
@@ -869,10 +1038,10 @@ def summary(st, passed, total, results, tl):
                                       for i, (pts, got, p, t) in enumerate(subparts, 1)))
     if results:
         counts = {}
-        for _, v, _ in results:
-            counts[v] = counts.get(v, 0) + 1
+        for r in results:
+            counts[r[1]] = counts.get(r[1], 0) + 1
         parts = []
-        for v in ("AC", "WA", "TLE", "RE"):
+        for v in ("AC", "WA", "TLE", "RE", "MLE"):
             if counts.get(v):
                 parts.append(getattr(st, VERDICT[v][1])(f"{v} {counts[v]}"))
         if len(results) < total:
@@ -882,9 +1051,12 @@ def summary(st, passed, total, results, tl):
             print("  Slowest " + st.dim(f">{tl:.1f} s"))
         else:
             print("  Slowest " + st.dim(f"{max(r[2] for r in results):.2f} s"))
+        peaks = [r[3] for r in results if r[3] is not None]
+        if peaks:
+            print("  Memory  " + st.dim(f"peak {max(peaks) / (1024 * 1024):.1f} MB · limit {MEM_LIMIT[0]} MB"))
     if total and passed == total:
         print("  " + st.green(st.bold("ACCEPTED  All tests passed. Well done!")))
-    elif subparts and subparts[0][2] == subparts[0][3] and any(r[1] in ("TLE", "RE") for r in results) and all(
+    elif subparts and subparts[0][2] == subparts[0][3] and any(r[1] in ("TLE", "RE", "MLE") for r in results) and all(
             r[1] != "WA" for r in results if is_sample(r[0])):
         # all of subtask 1 passed and subtask 2 fails because the program is too slow (TLE) or crashes (RE:
         # array / memory too big for n = 10^18), typical of a simulation. A wrong answer on a sample still gets
@@ -953,7 +1125,7 @@ def cmd_set(k, folder, meta, sets, st, tl, show_diff):
     scores = []
     print()
     print("  " + st.dim("legend  ") + st.green(st.chars["ok"]) + st.dim(" accepted   ") + st.red("W") + st.dim(" wrong answer   ")
-          + st.yellow("T") + st.dim(" time limit   ") + st.magenta("R") + st.dim(" runtime error"))
+          + st.yellow("T") + st.dim(" time limit   ") + st.magenta("R") + st.dim(" runtime error   ") + st.blue("M") + st.dim(" memory"))
     for i, n in enumerate(probs, 1):
         src = os.path.join(folder, f"{i}.cpp")
         print()
@@ -974,7 +1146,7 @@ def cmd_set(k, folder, meta, sets, st, tl, show_diff):
             continue
         tmp = tempfile.mkdtemp(prefix="judge_")
         try:
-            exe, _, msg = compile_source(src, tmp)
+            exe, _, msg, warns = compile_source(src, tmp)
             if not exe:
                 print("  ", end="")
                 print_compile_error(st, msg)
@@ -984,6 +1156,7 @@ def cmd_set(k, folder, meta, sets, st, tl, show_diff):
             print("  ", end="", flush=True)
             results, first_fail, total = run_tests(exe, pdir, st, tl, show_diff, False, quiet=True)
             print()
+            print_warnings(st, warns, quiet=True)
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
         sc = compute_score(results, total)[0]
@@ -1087,16 +1260,16 @@ def self_update(st, argv):
 def main():
     argv = sys.argv[1:]
     original_argv = list(argv)
-    opts = {"--tl": "1.0", "--diff": "3"}
+    opts = {"--tl": "1.0", "--diff": "3", "--ml": None}
     flags = set()
     pos = []
     i = 0
     while i < len(argv):
         a = argv[i]
-        if "=" in a and a.split("=", 1)[0] in ("--tl", "--diff", "--set"):
+        if "=" in a and a.split("=", 1)[0] in ("--tl", "--diff", "--set", "--ml"):
             a, val = a.split("=", 1)
             argv[i:i + 1] = [a, val]
-        if a in ("--tl", "--diff", "--set"):
+        if a in ("--tl", "--diff", "--set", "--ml"):
             if i + 1 >= len(argv):
                 return usage(f"{a} needs a value")
             opts[a] = argv[i + 1]
@@ -1151,6 +1324,10 @@ def main():
         show_diff = -1
     if show_diff < 0:
         return usage(f"--diff must be a whole number >= 0 (got {opts['--diff']})")
+    if opts["--ml"] is not None:
+        if not opts["--ml"].isdecimal() or not 1 <= int(opts["--ml"]) <= 65536:
+            return usage(f"--ml must be a number of MB between 1 and 65536 (got {opts['--ml']})")
+        ML_OPTION[0] = int(opts["--ml"])
     if "--list" in flags:
         cmd_list(meta, st)
         return 0
