@@ -10,8 +10,10 @@ and it updates itself from this GitHub repo so bugs can be fixed without re-send
 1. **Python 3.7+ standard library only.** No pip packages. Students have Python and g++, nothing else.
 2. **Student machines run Windows, macOS and Linux.** Every change must work on all three.
    Use `os.name == "nt"` guards like `judge.py` does. Never assume `/tmp`, `fork`, `resource`, or bash.
-3. **Never touch student code.** The updater may write only inside the `Judge/` folder, and only
-   files listed in `manifest.json`. It must never read, move, delete or overwrite `Mock_*/*.cpp`.
+3. **Never touch student code.** The updater writes only files listed in `manifest.json`: inside `Judge/`,
+   plus the managed package files students do not edit (PDFs, Makefile, judge.bat, READMEs, `.vscode/`) and
+   missing `Mock_K/N.cpp` templates. It must never read, move, delete or overwrite an existing `Mock_*/*.cpp`
+   or `progress.json`.
 4. **Never delete files the updater does not own.** No "wipe and reinstall" step, ever.
 5. **Fail safe.** If the network is down, slow (>2 s), or a hash does not match, keep the current
    version and continue silently. A broken update must never stop a student from judging.
@@ -90,13 +92,16 @@ Propose the design and wait for approval before writing it.
   `judge.py --help` -> only then `os.replace` them in (data first, `judge.py` last), old files to `Judge/.backup/`
   -> write the new `Judge/manifest.json`. Any failure: remove the temp folder, keep the current version, silent.
 - Paths: only `Judge/`-relative, no absolute, no `..`, no `\`, no leading `.`, never `manifest.json` /
-  `progress.json`. Create-only files (`Mock_K/N.cpp`, `Makefile`, `judge.bat`, `Mock_K.pdf`) are added
-  only when missing; nothing is ever deleted.
+  `progress.json`. Outside `Judge/` only two kinds, each matched by a strict regex in `updater.py`:
+  *managed* files students do not edit (`Mock_K/Mock_K.pdf`, `Makefile`, `judge.bat`, `README.txt`, `Guide.pdf`,
+  `Progress.md`, `.vscode/*.json`) are replaced when their hash changes (old copy in `Judge/.backup/_package/`);
+  *create-only* files (`Mock_K/N.cpp` templates) are added only when missing. A `.cpp` can never be managed.
+  Nothing is ever deleted.
 - Only an installed package updates (`Judge/judge.py` and `Judge/manifest.json` exist); `core/` in the repo never.
 - `--update` forces a check and prints the result; `--no-update` skips it; the header box shows `Judge vX.Y`
   (from `Judge/manifest.json`). Recovery when `judge.py` itself is broken: `python3 ../Judge/updater.py`.
 - Manifest format (version in `tools/build_manifest.py`): `version`, `sources` (Judge/ prefix -> repo folder),
-  `files` (Judge/ path -> sha256), `create_only` (package path -> [sha256, repo path]).
+  `files` (Judge/ path -> sha256), `managed` and `create_only` (package path -> [sha256, repo path]).
 
 ## Releasing a change to students
 

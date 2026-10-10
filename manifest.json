@@ -32,18 +32,6 @@
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
 ],
-"Mock_1/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_1/Mock_1.pdf": [
-"85cd157bb4c3f5980865a05853d197ac7f2a5fb355c21df68f6d78f9293e49e4",
-"student/Mock_1/Mock_1.pdf"
-],
-"Mock_1/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
-],
 "Mock_10/1.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
@@ -75,18 +63,6 @@
 "Mock_10/8.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
-],
-"Mock_10/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_10/Mock_10.pdf": [
-"8abb0a0315e6c90534881ac9b29b1017645aeb57bf1ba52f2cd19155115cadcc",
-"student/Mock_10/Mock_10.pdf"
-],
-"Mock_10/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
 ],
 "Mock_11/1.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
@@ -120,18 +96,6 @@
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
 ],
-"Mock_11/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_11/Mock_11.pdf": [
-"e596d36af276800b1516fc15d8b142ab7982203ff99e41ab6b4d545b6e60c599",
-"student/Mock_11/Mock_11.pdf"
-],
-"Mock_11/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
-],
 "Mock_12/1.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
@@ -163,18 +127,6 @@
 "Mock_12/8.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
-],
-"Mock_12/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_12/Mock_12.pdf": [
-"7ccf04425b161613d332901305b30c75474fb86be55f66b79c34cab7a462903f",
-"student/Mock_12/Mock_12.pdf"
-],
-"Mock_12/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
 ],
 "Mock_13/1.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
@@ -208,18 +160,6 @@
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
 ],
-"Mock_13/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_13/Mock_13.pdf": [
-"c92419ce877ba81060cbd2cb81e5316c92e5723e0046b6357a201a4e0d52f94f",
-"student/Mock_13/Mock_13.pdf"
-],
-"Mock_13/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
-],
 "Mock_14/1.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
@@ -251,18 +191,6 @@
 "Mock_14/8.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
-],
-"Mock_14/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_14/Mock_14.pdf": [
-"052af29dfa7e869de96c469a3b90102bf3fac58ff0d9aec74364228f2e6c8d92",
-"student/Mock_14/Mock_14.pdf"
-],
-"Mock_14/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
 ],
 "Mock_15/1.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
@@ -296,18 +224,6 @@
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
 ],
-"Mock_15/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_15/Mock_15.pdf": [
-"5a9a1202914b0d20738b53d926c2cffac9f5cdf5034ddb94420e7fd60052cf12",
-"student/Mock_15/Mock_15.pdf"
-],
-"Mock_15/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
-],
 "Mock_2/1.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
@@ -339,18 +255,6 @@
 "Mock_2/8.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
-],
-"Mock_2/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_2/Mock_2.pdf": [
-"04ddb996eeb75e3ca7d99052a6fe1d66c34707981579badf6c7a7b013c331f87",
-"student/Mock_2/Mock_2.pdf"
-],
-"Mock_2/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
 ],
 "Mock_3/1.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
@@ -384,18 +288,6 @@
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
 ],
-"Mock_3/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_3/Mock_3.pdf": [
-"b2d0f89c29182628ac8c1e433dd80a908f6ab1685f1933783ba33259fb16ee59",
-"student/Mock_3/Mock_3.pdf"
-],
-"Mock_3/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
-],
 "Mock_4/1.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
@@ -427,18 +319,6 @@
 "Mock_4/8.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
-],
-"Mock_4/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_4/Mock_4.pdf": [
-"387fc5ceeb69bc83696c33f7a6648362c03ade1596f9c201263ab04abdd506da",
-"student/Mock_4/Mock_4.pdf"
-],
-"Mock_4/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
 ],
 "Mock_5/1.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
@@ -472,18 +352,6 @@
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
 ],
-"Mock_5/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_5/Mock_5.pdf": [
-"476786e402ec2ad841959633c4d1e50c1c6485e02e8993a31dce16613955a4cd",
-"student/Mock_5/Mock_5.pdf"
-],
-"Mock_5/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
-],
 "Mock_6/1.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
@@ -515,18 +383,6 @@
 "Mock_6/8.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
-],
-"Mock_6/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_6/Mock_6.pdf": [
-"5a35ef7d2514f1d3924c99398beadb51bb8400ac9f618124af6b2598a9a6461b",
-"student/Mock_6/Mock_6.pdf"
-],
-"Mock_6/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
 ],
 "Mock_7/1.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
@@ -560,18 +416,6 @@
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
 ],
-"Mock_7/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_7/Mock_7.pdf": [
-"bc7a9ef8f391c297dd3ac365dd7e53c28147da13c0d678ebac8e8d9e717cb237",
-"student/Mock_7/Mock_7.pdf"
-],
-"Mock_7/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
-],
 "Mock_8/1.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
@@ -604,18 +448,6 @@
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
 ],
-"Mock_8/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_8/Mock_8.pdf": [
-"ae77ad54f15f7bd3ff090e206008e7433c8e1791c86ed0759908f74eb4c3f89d",
-"student/Mock_8/Mock_8.pdf"
-],
-"Mock_8/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
-],
 "Mock_9/1.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
@@ -647,22 +479,10 @@
 "Mock_9/8.cpp": [
 "0f26f3b139e360c10069c51360da69dc75f2943868681f12c63c93ea48f133bd",
 "student/set_files/template.cpp"
-],
-"Mock_9/Makefile": [
-"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
-"student/set_files/Makefile"
-],
-"Mock_9/Mock_9.pdf": [
-"92125be6b8c11deca9e7dc1903b84c0b79dff7f88bef874ed77ee7970d93040b",
-"student/Mock_9/Mock_9.pdf"
-],
-"Mock_9/judge.bat": [
-"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
-"student/set_files/judge.bat"
 ]
 },
 "files": {
-"CHANGELOG.txt": "204b4c5d87fd0b431a942e24fb786f383807de8ebeabe1455275d9eefeaba3c2",
+"CHANGELOG.txt": "c8646f50842e7b4ab7ea3cc15b3da15eb9eebb0fcdeaec55cdc22ea9454e15a4",
 "README.txt": "bea19effb07a6d112362266a0851117186ff72ba97c3129b4bd6e32fe0b9f964",
 "include/bits/stdc++.h": "1545f1f4b55b3acb866effca73203f3a9131773f147331cbf4e983ebf36d6cc9",
 "judge.cmd": "84038f11038804a85edc6df3e3c64f10a72891fad6b98ac7a7ae08e358ed7f44",
@@ -4381,11 +4201,209 @@
 "problems/batch/Mock_9/8/16.out": "482dc71c1d202afcc548a436028ad4ad3e0ebd54ab1dd000b5fc7b67e28436e7",
 "problems/batch/problems.json": "6732b346f1cbb4a98926c3bba3b06d9c532f84f257bfcdafb2402d55788f0180",
 "problems/batch/sets.json": "cf95a3299a233f6235c682f78a0b45d868db0e93f46d7b177a708bc05b4ac3cd",
-"updater.py": "7b995753687f2dda3db78c4ce2a40bd43afa04de38ec3ce4ec0bf4125e768e7c"
+"updater.py": "cc8b33203d018aa59ccfb40330f769f21bf1eb93ac45196dcfc0d63f785039f4"
+},
+"managed": {
+".vscode/settings.json": [
+"5d8743b2268dfb01fd096ff4678feb220284089f20509b099a153de1dbc948ed",
+"student/.vscode/settings.json"
+],
+".vscode/tasks.json": [
+"62244a8d6b151f99d9e47318784f66a8d14d6660c15ce25ba50626050bdcffe1",
+"student/.vscode/tasks.json"
+],
+"Guide.pdf": [
+"ee612e7b540989cfe89464ef9dc221b6a94327cfb761ef6bed8ead366a05f4c0",
+"student/Guide.pdf"
+],
+"Mock_1/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_1/Mock_1.pdf": [
+"85cd157bb4c3f5980865a05853d197ac7f2a5fb355c21df68f6d78f9293e49e4",
+"student/Mock_1/Mock_1.pdf"
+],
+"Mock_1/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"Mock_10/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_10/Mock_10.pdf": [
+"8abb0a0315e6c90534881ac9b29b1017645aeb57bf1ba52f2cd19155115cadcc",
+"student/Mock_10/Mock_10.pdf"
+],
+"Mock_10/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"Mock_11/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_11/Mock_11.pdf": [
+"e596d36af276800b1516fc15d8b142ab7982203ff99e41ab6b4d545b6e60c599",
+"student/Mock_11/Mock_11.pdf"
+],
+"Mock_11/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"Mock_12/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_12/Mock_12.pdf": [
+"7ccf04425b161613d332901305b30c75474fb86be55f66b79c34cab7a462903f",
+"student/Mock_12/Mock_12.pdf"
+],
+"Mock_12/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"Mock_13/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_13/Mock_13.pdf": [
+"c92419ce877ba81060cbd2cb81e5316c92e5723e0046b6357a201a4e0d52f94f",
+"student/Mock_13/Mock_13.pdf"
+],
+"Mock_13/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"Mock_14/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_14/Mock_14.pdf": [
+"052af29dfa7e869de96c469a3b90102bf3fac58ff0d9aec74364228f2e6c8d92",
+"student/Mock_14/Mock_14.pdf"
+],
+"Mock_14/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"Mock_15/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_15/Mock_15.pdf": [
+"5a9a1202914b0d20738b53d926c2cffac9f5cdf5034ddb94420e7fd60052cf12",
+"student/Mock_15/Mock_15.pdf"
+],
+"Mock_15/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"Mock_2/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_2/Mock_2.pdf": [
+"04ddb996eeb75e3ca7d99052a6fe1d66c34707981579badf6c7a7b013c331f87",
+"student/Mock_2/Mock_2.pdf"
+],
+"Mock_2/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"Mock_3/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_3/Mock_3.pdf": [
+"b2d0f89c29182628ac8c1e433dd80a908f6ab1685f1933783ba33259fb16ee59",
+"student/Mock_3/Mock_3.pdf"
+],
+"Mock_3/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"Mock_4/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_4/Mock_4.pdf": [
+"387fc5ceeb69bc83696c33f7a6648362c03ade1596f9c201263ab04abdd506da",
+"student/Mock_4/Mock_4.pdf"
+],
+"Mock_4/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"Mock_5/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_5/Mock_5.pdf": [
+"476786e402ec2ad841959633c4d1e50c1c6485e02e8993a31dce16613955a4cd",
+"student/Mock_5/Mock_5.pdf"
+],
+"Mock_5/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"Mock_6/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_6/Mock_6.pdf": [
+"5a35ef7d2514f1d3924c99398beadb51bb8400ac9f618124af6b2598a9a6461b",
+"student/Mock_6/Mock_6.pdf"
+],
+"Mock_6/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"Mock_7/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_7/Mock_7.pdf": [
+"bc7a9ef8f391c297dd3ac365dd7e53c28147da13c0d678ebac8e8d9e717cb237",
+"student/Mock_7/Mock_7.pdf"
+],
+"Mock_7/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"Mock_8/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_8/Mock_8.pdf": [
+"ae77ad54f15f7bd3ff090e206008e7433c8e1791c86ed0759908f74eb4c3f89d",
+"student/Mock_8/Mock_8.pdf"
+],
+"Mock_8/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"Mock_9/Makefile": [
+"e5bc8ca26beb7e41e49681c2d6e890a3402eb21b8390d0dd4e63ab80357c696c",
+"student/set_files/Makefile"
+],
+"Mock_9/Mock_9.pdf": [
+"92125be6b8c11deca9e7dc1903b84c0b79dff7f88bef874ed77ee7970d93040b",
+"student/Mock_9/Mock_9.pdf"
+],
+"Mock_9/judge.bat": [
+"70bc4bbdfc1d053accd43a71287642a0d5f5a9d48cf33450c6d240f691fa05d0",
+"student/set_files/judge.bat"
+],
+"README.txt": [
+"a943e4fc72d8e402226ced2a5682d731994a27f75740a0d9c3f2ad581ebce498",
+"student/README.txt"
+]
 },
 "sources": {
 "": "core/",
 "problems/": "problems/"
 },
-"version": "1.4"
+"version": "1.5"
 }

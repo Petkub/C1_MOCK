@@ -162,6 +162,9 @@ def make_repo2(tmp, version, marker):
         f.write(f"\n# {marker}\n")
     with open(os.path.join(repo2, "core", "README.txt"), "a") as f:
         f.write(f"{marker}\n")
+    for name in (("student", "README.txt"), ("student", "set_files", "Makefile")):     # managed package files
+        with open(os.path.join(repo2, *name), "a", encoding="utf-8") as f:
+            f.write(f"\n# {marker}\n")
     rebuild_manifest(repo2)
     return repo2
 
@@ -213,6 +216,13 @@ def test_updater():
             new_judge = f.read()
         check("marker-v9.9" in new_judge and sha(os.path.join(judge_dir, ".backup", "judge.py")) == old_judge,
               "judge.py replaced, old one kept in Judge/.backup/")
+        with open(os.path.join(root, "README.txt"), encoding="utf-8") as f:
+            readme = f.read()
+        with open(os.path.join(set1, "Makefile"), encoding="utf-8") as f:
+            makefile = f.read()
+        check("marker-v9.9" in readme and "marker-v9.9" in makefile
+              and os.path.exists(os.path.join(judge_dir, ".backup", "_package", "Mock_1", "Makefile")),
+              "managed files README.txt and Mock_1/Makefile replaced, old copies in Judge/.backup/_package/")
         check(sha(os.path.join(set1, "3.cpp")) == student_hash and sha(os.path.join(set1, "1.cpp")) == template,
               "student files untouched")
         check(os.path.exists(os.path.join(set1, "9.cpp")) and sha(os.path.join(set1, "9.cpp")) == template,
@@ -242,6 +252,13 @@ def test_updater():
         code, out, _ = run_student(["--update", "--no-color"], set1, url)
         check(code == 1 and "bad path" in out and not os.path.exists(os.path.join(root, "evil.txt")),
               "path outside Judge/: refused", f"exit {code}\n{out}")
+        rebuild_manifest(repo2)
+        edit_manifest(repo2, lambda m: m["managed"].update(
+            {"Mock_1/3.cpp": [sha(os.path.join(repo2, "student", "set_files", "template.cpp")), "student/set_files/template.cpp"]})
+            or m.update(version="9.14"))
+        code, out, _ = run_student(["--update", "--no-color"], set1, url)
+        check(code == 1 and "bad managed entry" in out and sha(os.path.join(set1, "3.cpp")) == student_hash,
+              "a .cpp listed as managed: refused, student file untouched", f"exit {code}\n{out}")
 
         # e) recovery: a damaged file is re-downloaded by python Judge/updater.py
         rebuild_manifest(repo2)

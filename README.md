@@ -82,13 +82,14 @@ Add one line to `core/CHANGELOG.txt` for each version; students can read it.
    `"samples"`, optional `"subtasks"`), with new ids.
 3. `problems/batch/sets.json`: append `{"set": 16, "stage": ..., "problems": [ids in order]}`.
 4. `student/Mock_16/Mock_16.pdf` (the statement).
-5. Release. Existing students get the test data, and the updater **creates** `Mock_16/1.cpp ... 8.cpp`, `Makefile`,
-   `judge.bat` and `Mock_16.pdf` in their folder (only files that do not exist yet; it never overwrites).
+5. Release. Existing students get the test data, `Mock_16/Mock_16.pdf`, `Makefile`, `judge.bat`, and the
+   updater **creates** `Mock_16/1.cpp ... 8.cpp` (templates are only ever created, never overwritten).
 
 ### 4d. Change something students see outside Judge/ (README, Makefile, judge.bat, template)
-Edit it under `student/`. Note: these are *create-only* for existing students (their copy is not replaced,
-because `Mock_K/` is their folder); new students get the new version from the zip. Text inside `Judge/`
-(`core/README.txt`, `core/CHANGELOG.txt`) does update everywhere.
+Edit it under `student/` and release. These are *managed* files: the updater replaces them on every student's
+computer when they change (the old copy goes to `Judge/.backup/_package/`), because students do not edit them.
+The only files that are never replaced are the `Mock_K/N.cpp` templates (created once, then the student's own)
+and `Judge/progress.json`.
 
 ### 4e. A new zip for new students
 ```bash
@@ -104,8 +105,8 @@ release. You only need a new release for new students (or new sets); existing st
   SHA-256 of every file in `Judge/`, downloads the changed ones to a temp folder, verifies each hash, compiles
   the new `.py` files and test-runs the new `judge.py --help`, and only then swaps them in. The old file is kept
   in `Judge/.backup/`.
-- It writes only inside `Judge/` (plus create-only `Mock_K/` files), never deletes anything, and never touches
-  `Mock_K/N.cpp`.
+- Outside `Judge/` it only replaces the managed files above and creates missing `Mock_K/N.cpp` templates; it
+  never deletes anything and never touches an existing `Mock_K/N.cpp`.
 - No network, a slow network (> 2 s), a bad hash, a strange path: it keeps the current version and says nothing.
   A failed update never stops a student from judging.
 - Students with a zip from **before** the updater existed (before v1.2) must download the zip once; nothing can

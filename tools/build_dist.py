@@ -56,19 +56,12 @@ def copy_judge(root, manifest):
         f.write(build_manifest.dumps(manifest))
 
 
-def copy_student_files(root):
-    for name in ("README.txt", "Guide.pdf", "Progress.md"):
-        p = os.path.join(STUDENT, name)
-        if os.path.exists(p):
-            shutil.copy2(p, root)
-    if os.path.isdir(os.path.join(STUDENT, ".vscode")):
-        shutil.copytree(os.path.join(STUDENT, ".vscode"), os.path.join(root, ".vscode"))
-
-
-def make_sets(root):
-    for rel, src in build_manifest.set_files():
+def copy_package_files(root):
+    """Everything outside Judge/: the managed files and the create-only templates, as the manifest lists them."""
+    pairs = build_manifest.managed_files() + build_manifest.set_files()
+    for rel, src in pairs:
         copy_file(os.path.join(REPO, src), os.path.join(root, *rel.split("/")))
-    return len({rel.split("/")[0] for rel, _ in build_manifest.set_files()})
+    return len({rel.split("/")[0] for rel, _ in pairs if rel.startswith("Mock_")})
 
 
 def make_zip(root):
@@ -98,8 +91,7 @@ def main():
         f.write(build_manifest.dumps(manifest))
     root = prepare(out)
     copy_judge(root, manifest)
-    copy_student_files(root)
-    n = make_sets(root)
+    n = copy_package_files(root)
     print(f"Built {root} (v{manifest['version']}, {n} sets)")
     if "--no-zip" not in argv:
         path = make_zip(root)

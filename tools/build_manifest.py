@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
 Write manifest.json: the version (file VERSION) and the SHA-256 of every file the student package gets inside
-Judge/, plus the create-only Mock_K files (templates, Makefile, judge.bat, Mock_K.pdf) of every set.
+Judge/, the managed package files outside Judge/ (Mock_K.pdf, Makefile, judge.bat, README.txt, Guide.pdf,
+Progress.md, .vscode/: replaced on the students' computers when they change) and the create-only files
+(Mock_K/N.cpp templates: added only when missing, never replaced).
 Judge/updater.py on the students' computers compares this file with what they have.
 
   python3 tools/build_manifest.py            write manifest.json (run after changing core/, problems/, student/)
@@ -11,6 +13,7 @@ Manifest format (version 1):
   {"version": "1.0",
    "sources": {"problems/": "problems/", "": "core/"},        Judge/ path prefix -> repo folder
    "files": {"judge.py": "<sha256>", "problems/batch/Mock_1/1/01.in": "<sha256>", ...},
+   "managed": {"Mock_1/Mock_1.pdf": ["<sha256>", "student/Mock_1/Mock_1.pdf"], "README.txt": [...], ...},
    "create_only": {"Mock_1/1.cpp": ["<sha256>", "student/set_files/template.cpp"], ...}}
 """
 import hashlib
@@ -53,15 +56,25 @@ def judge_files():
     return sorted(out)
 
 
-def set_files():
-    """Create-only files of every set as (path relative to the package root, repo-relative source path)."""
+def load_sets():
     with open(os.path.join(REPO, "problems", "batch", "sets.json"), encoding="utf-8") as f:
-        sets = json.load(f)
+        return json.load(f)
+
+
+def set_files():
+    """Create-only files (the N.cpp templates of every set) as (package path, repo-relative source path)."""
+    return [(f"Mock_{s['set']}/{i}.cpp", "student/set_files/template.cpp")
+            for s in load_sets() for i in range(1, len(s["problems"]) + 1)]
+
+
+def managed_files():
+    """Managed package files outside Judge/ as (package path, repo-relative source path)."""
     out = []
-    for s in sets:
+    for name in ("README.txt", "Guide.pdf", "Progress.md", ".vscode/tasks.json", ".vscode/settings.json"):
+        if os.path.exists(os.path.join(REPO, "student", *name.split("/"))):
+            out.append((name, "student/" + name))
+    for s in load_sets():
         k = s["set"]
-        for i in range(1, len(s["problems"]) + 1):
-            out.append((f"Mock_{k}/{i}.cpp", "student/set_files/template.cpp"))
         out.append((f"Mock_{k}/Makefile", "student/set_files/Makefile"))
         out.append((f"Mock_{k}/judge.bat", "student/set_files/judge.bat"))
         if os.path.exists(os.path.join(REPO, "student", f"Mock_{k}", f"Mock_{k}.pdf")):
@@ -69,10 +82,14 @@ def set_files():
     return out
 
 
+def with_hashes(pairs):
+    return {rel: [sha256_file(os.path.join(REPO, src)), src] for rel, src in pairs}
+
+
 def build():
     files = {rel: sha256_file(os.path.join(REPO, src)) for rel, src in judge_files()}
-    creates = {rel: [sha256_file(os.path.join(REPO, src)), src] for rel, src in set_files()}
-    return {"version": version(), "sources": SOURCES, "files": files, "create_only": creates}
+    return {"version": version(), "sources": SOURCES, "files": files,
+            "managed": with_hashes(managed_files()), "create_only": with_hashes(set_files())}
 
 
 def dumps(manifest):
@@ -96,7 +113,7 @@ def main():
     with open(MANIFEST, "w", encoding="utf-8") as f:
         f.write(text)
     print(f"Wrote manifest.json: v{manifest['version']}, {len(manifest['files'])} files in Judge/, "
-          f"{len(manifest['create_only'])} create-only set files.")
+          f"{len(manifest['managed'])} managed and {len(manifest['create_only'])} create-only package files.")
     return 0
 
 

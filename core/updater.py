@@ -10,8 +10,10 @@ an odd path) means: keep the current version and say nothing. A failed update ne
 
 Rules
   - writes only inside Judge/ and only the files listed in the manifest; never deletes anything
-  - never reads or writes student files (Mock_K/N.cpp, progress.json); a new mock set may add Mock_K/N.cpp,
-    Makefile, judge.bat and Mock_K.pdf, and only when the file does not exist yet
+  - never reads or writes student files (Mock_K/N.cpp, progress.json). Outside Judge/ it only handles
+    "managed" files the students do not edit (Mock_K.pdf, Makefile, judge.bat, README.txt, Guide.pdf,
+    Progress.md, .vscode/) and "create-only" files (Mock_K/N.cpp templates of a new set, added only when
+    missing). The old copy of every replaced file goes to Judge/.backup/ (package files under _package/)
   - updates only an installed package (Judge/judge.py and Judge/manifest.json exist), never the source repo
 
 Recovery:  python3 ../Judge/updater.py      force a check and re-download changed or damaged files
@@ -37,7 +39,9 @@ STAMP = ".update_check"             # Judge/.update_check: time of the last chec
 BACKUP = ".backup"
 TMP = ".update_tmp"
 NEVER_UPDATE = {"manifest.json", "progress.json", "progress.json.tmp"}
-SET_FILE = re.compile(r"^Mock_[0-9]+/([0-9]+\.cpp|Makefile|judge\.bat|Mock_[0-9]+\.pdf)$")
+SET_FILE = re.compile(r"^Mock_[0-9]+/[0-9]+\.cpp$")                 # create-only: a student's own files
+MANAGED_FILE = re.compile(r"^(Mock_[0-9]+/(Makefile|judge\.bat|Mock_[0-9]+\.pdf)|Guide\.pdf|README\.txt"
+                          r"|Progress\.md|\.vscode/(tasks|settings)\.json)$")   # replaced when they change
 
 
 class Result:
@@ -109,6 +113,16 @@ def set_path(rel):
     return os.path.join(*rel.split("/")) if isinstance(rel, str) and SET_FILE.match(rel) else None
 
 
+def managed_path(rel):
+    """Path (relative to the folder holding Judge/) of a managed package file, or None."""
+    return os.path.join(*rel.split("/")) if isinstance(rel, str) and MANAGED_FILE.match(rel) else None
+
+
+def good_spec(spec):
+    return (isinstance(spec, list) and len(spec) == 2 and is_hash(spec[0]) and isinstance(spec[1], str)
+            and ".." not in spec[1])
+
+
 def source_of(rel, sources):
     """Repo path of a Judge/ file: the longest matching prefix in the manifest's sources map."""
     best = None
@@ -126,8 +140,8 @@ def is_hash(s):
 
 # ----------------------------------------------------------------------------- planning
 def plan(judge_dir, remote, local, force):
-    """Lists of (judge-relative path, repo path, sha) to update and of create-only set files to add.
-    Raises ValueError when the manifest is not acceptable."""
+    """Lists of (path, repo path, sha): Judge/ files to update, managed package files to replace, create-only
+    set files to add. Raises ValueError when the manifest is not acceptable."""
     files, sources = remote.get("files"), remote.get("sources")
     if not isinstance(files, dict) or not isinstance(sources, dict) or not isinstance(remote.get("version"), str):
         raise ValueError("bad manifest")
@@ -148,15 +162,30 @@ def plan(judge_dir, remote, local, force):
             changed = False          # same hash as the installed manifest: trust it, do not re-read the file
         if changed:
             updates.append((p, source_of(rel, sources), sha))
+    base = os.path.dirname(judge_dir)
+    known_managed = local.get("managed", {}) if isinstance(local, dict) else {}
+    managed = []
+    for rel, spec in (remote.get("managed") or {}).items():
+        p = managed_path(rel)
+        if p is None or not good_spec(spec):
+            raise ValueError("bad managed entry: " + str(rel))
+        full = os.path.join(base, p)
+        if not os.path.exists(full):
+            changed = True
+        elif force or known_managed.get(rel) != spec:
+            changed = file_sha(full) != spec[0]
+        else:
+            changed = False
+        if changed:
+            managed.append((p, spec[1], spec[0]))
     creates = []
     for rel, spec in (remote.get("create_only") or {}).items():
         p = set_path(rel)
-        if p is None or not (isinstance(spec, list) and len(spec) == 2 and is_hash(spec[0])
-                             and isinstance(spec[1], str) and ".." not in spec[1]):
+        if p is None or not good_spec(spec):
             raise ValueError("bad create-only entry: " + str(rel))
-        if not os.path.exists(os.path.join(os.path.dirname(judge_dir), p)):
+        if not os.path.exists(os.path.join(base, p)):
             creates.append((p, spec[1], spec[0]))
-    return updates, creates
+    return updates, managed, creates
 
 
 def download(items, tmp, url, fresh):
@@ -185,18 +214,24 @@ def test_new_judge(tmp):
         raise ValueError("the new judge.py does not run")
 
 
-def apply(judge_dir, updates, creates, tmp):
+def replace_file(src, dest, bak):
+    """Move src over dest; the old dest (if any) is kept at bak."""
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    if os.path.exists(dest):
+        os.makedirs(os.path.dirname(bak), exist_ok=True)
+        os.replace(dest, bak)
+    os.replace(src, dest)
+
+
+def apply(judge_dir, updates, managed, creates, tmp):
     """Swap the verified files in: data first, judge.py last; keep the old file in Judge/.backup/."""
     order = sorted(updates, key=lambda u: (u[0].endswith(".py"), u[0] == "judge.py"))
     for p, _, _ in order:
-        dest = os.path.join(judge_dir, p)
-        os.makedirs(os.path.dirname(dest), exist_ok=True)
-        if os.path.exists(dest):
-            bak = os.path.join(judge_dir, BACKUP, p)
-            os.makedirs(os.path.dirname(bak), exist_ok=True)
-            os.replace(dest, bak)
-        os.replace(os.path.join(tmp, p), dest)
+        replace_file(os.path.join(tmp, p), os.path.join(judge_dir, p), os.path.join(judge_dir, BACKUP, p))
     base = os.path.dirname(judge_dir)
+    for p, _, _ in managed:
+        replace_file(os.path.join(tmp, "_managed", p), os.path.join(base, p),
+                     os.path.join(judge_dir, BACKUP, "_package", p))
     for p, _, _ in creates:
         dest = os.path.join(base, p)
         if not os.path.exists(dest):                # create only, never overwrite a student's file
@@ -234,19 +269,20 @@ def check(judge_dir=ROOT, force=False):
         url = base_url()
         data = fetch(url + "manifest.json", MAX_MANIFEST, force)
         remote = json.loads(data.decode("utf-8"))
-        updates, creates = plan(judge_dir, remote, local, force)
-        if not updates and not creates and remote["version"] == version:
+        updates, managed, creates = plan(judge_dir, remote, local, force)
+        if not updates and not managed and not creates and remote["version"] == version:
             return Result("current", f"Judge v{version} is up to date", version)
         shutil.rmtree(tmp, ignore_errors=True)
         os.makedirs(tmp)
         download(updates, tmp, url, force)
+        download(managed, os.path.join(tmp, "_managed"), url, force)
         download(creates, os.path.join(tmp, "_sets"), url, force)
         test_new_judge(tmp)
-        apply(judge_dir, updates, creates, tmp)
+        apply(judge_dir, updates, managed, creates, tmp)
         with open(os.path.join(tmp, "manifest.json"), "wb") as f:
             f.write(data)
         os.replace(os.path.join(tmp, "manifest.json"), os.path.join(judge_dir, "manifest.json"))
-        names = [p.replace(os.sep, "/") for p, _, _ in updates] + [p.replace(os.sep, "/") for p, _, _ in creates]
+        names = [p.replace(os.sep, "/") for p, _, _ in updates + managed + creates]
         return Result("updated", f"updated to v{remote['version']} ({len(names)} files)", remote["version"], names)
     except Exception as ex:          # network, hash, bad manifest, read-only folder, ...: keep what we have
         return Result("failed", f"{type(ex).__name__}: {ex}", version)
