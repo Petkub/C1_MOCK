@@ -88,6 +88,18 @@ def test_samples():
             check(PEAK[0] is not None and 0.1 < PEAK[0] < 16, f"peak memory of a small program is measured: {PEAK[0]} MB")
 
 
+def test_exited_peak():
+    """A program that exits before the first memory reading must not get the judge's own size (wait4's ru_maxrss)."""
+    if os.name == "nt":
+        return
+    import resource
+    own = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    scale = 1 if sys.platform == "darwin" else 1024
+    check(judge.exited_peak(own) is None, "a fast small program's peak is unknown, not the judge's own size",
+          f"got {judge.exited_peak(own)}")
+    check(judge.exited_peak(3 * own) == 3 * own * scale, "a fast big program's ru_maxrss is still used",
+          f"got {judge.exited_peak(3 * own)}")
+
 # ----------------------------------------------------------------------------- 2. command line
 def run_judge(args, cwd=REPO, judge_path=JUDGE):
     """Run judge.py like a student. Returns (exit code, output text, output is plain ASCII)."""
@@ -281,12 +293,15 @@ def test_updater():
         # e) recovery: a damaged file is re-downloaded by python Judge/updater.py
         rebuild_manifest(repo2)
         os.remove(os.path.join(judge_dir, "README.txt"))
+        shutil.rmtree(os.path.join(root, ".vscode"))     # lost when the package was copied (hidden folder)
         env = dict(os.environ, JUDGE_UPDATE_URL=url)
         p = subprocess.run([sys.executable, os.path.join(judge_dir, "updater.py")], env=env, cwd=set1,
                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         out = p.stdout.decode("utf-8", "replace")
         check(p.returncode == 0 and os.path.exists(os.path.join(judge_dir, "README.txt")),
               "python Judge/updater.py restores a missing file", f"exit {p.returncode}\n{out}")
+        check(os.path.exists(os.path.join(root, ".vscode", "tasks.json")),
+              "a missing .vscode/ (Ctrl+Shift+B task) is restored too", f"exit {p.returncode}\n{out}")
         srv.shutdown()
 
         # f) no network: the judge works as usual, quickly
@@ -318,6 +333,7 @@ def main():
         print("g++ not found: the regression tests need a C++ compiler in PATH.")
         return 1
     test_samples()
+    test_exited_peak()
     test_cli()
     test_student_package()
     test_updater()

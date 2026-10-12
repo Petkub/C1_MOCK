@@ -482,11 +482,11 @@
 ]
 },
 "files": {
-"CHANGELOG.txt": "46e4c85b1bcd3f2103122bb9171993709574874c9c5548f3d569fd801b72dab1",
+"CHANGELOG.txt": "44cbfd355ed7d1320ebd46d9620302d261cdc1dd42014997a268e19381374719",
 "README.txt": "d0e97da728637b9be3226c2bbe85d390258d789ffac336da4c50dc4d0c7ae7c2",
 "include/bits/stdc++.h": "1545f1f4b55b3acb866effca73203f3a9131773f147331cbf4e983ebf36d6cc9",
 "judge.cmd": "84038f11038804a85edc6df3e3c64f10a72891fad6b98ac7a7ae08e358ed7f44",
-"judge.py": "129588680109c311b269efcb1af9398dab3737d830b6c589d17c2873e33c6d9a",
+"judge.py": "f5f6e7eeaab82a23bea2461fb8d1e2674beb55f492a450b5e028d4096a73c4d0",
 "problems/batch/Mock_1/1/01.in": "7da4606de7fa8bb5181beea4940deefacde4b87ba5431fabd09a4e315f378d95",
 "problems/batch/Mock_1/1/01.out": "f458f6d86129f5c0ab6c964238772fbe286c10ee24ae1f68f9064b710a2cc586",
 "problems/batch/Mock_1/1/02.in": "5324ba1fb0bb03929244b7a54770c8a14523f2cc4974eb1529f3238ef8059653",
@@ -4405,5 +4405,5 @@
 "": "core/",
 "problems/": "problems/"
 },
-"version": "1.7"
+"version": "1.8"
 }

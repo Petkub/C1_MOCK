@@ -529,7 +529,7 @@ def wait_program(p, timeout):
     """Wait for the judged program like p.wait(timeout) and return its peak memory in bytes (None if unknown).
     Windows: GetProcessMemoryInfo on the handle after the exit (exact). Linux / macOS: the program's own
     high-water mark is read every millisecond while it runs (/proc VmHWM, proc_pid_rusage); ru_maxrss from
-    wait4 is only a fallback, because it also counts the judge's own image before the exec."""
+    wait4 is only a fallback (exited_peak), because it also counts the judge's own image before the exec."""
     if os.name == "nt":
         p.wait(timeout=timeout)
         return windows_peak_memory(p)
@@ -546,12 +546,28 @@ def wait_program(p, timeout):
         if pid == p.pid:
             p.returncode = exit_code(status)
             if peak is None:
-                peak = ru.ru_maxrss * (1 if sys.platform == "darwin" else 1024)      # macOS: bytes, Linux: KB
+                peak = exited_peak(ru.ru_maxrss)
             return peak
         if deadline is not None and time.perf_counter() >= deadline:
             raise subprocess.TimeoutExpired(p.args, timeout)
         time.sleep(delay)
         delay = min(delay * 2, 0.001)
+
+
+def exited_peak(maxrss):
+    """Peak memory (bytes) of a program that exited before its first reading, from wait4's ru_maxrss, or None.
+    ru_maxrss is at least the judge's own peak (the child starts as a copy of the judge, or shares its memory
+    until the exec), so it is the program's own peak only when it is clearly bigger than that (the kernel's
+    counters are approximate); otherwise the program was small (it ran for under a millisecond) and its peak
+    is unknown."""
+    try:
+        import resource              # POSIX only; wait_program does not come here on Windows
+        own = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    except Exception:
+        return None
+    if maxrss <= own + own // 4:
+        return None
+    return maxrss * (1 if sys.platform == "darwin" else 1024)      # macOS: bytes, Linux: KB
 
 
 def linux_peak_memory(pid):

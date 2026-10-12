@@ -68,7 +68,8 @@ and `Mock_Test/Mock_K/1.cpp ... 8.cpp` = student files. The repo layout is **not
 - Limits: time `--tl` (default 1 s, hard kill at 2x+0.5 s), memory `--ml` (default 64 MB, the statements;
   `"ml"` in `problems.json` per problem). Memory = the program's peak resident size, read every millisecond while
   it runs (`/proc/<pid>/status VmHWM` on Linux, `proc_pid_rusage` on macOS, `GetProcessMemoryInfo` after exit on
-  Windows); never `ru_maxrss` of the child first, because that includes the judge's own Python image before exec.
+  Windows); never `ru_maxrss` of the child first, because that includes the judge's own Python image before exec
+  (`exited_peak`: used only when a program exits before the first reading and it is clearly above the judge's own peak).
   Verdicts in order: MLE, TLE (killed), WA (output over 64 MB), RE (exit code != 0), TLE (slow), AC/WA.
 - The last 8 KB of the program's stderr are kept; after an RE the last 5 lines are shown (exception text, assert).
 - Samples for the regression suite: `*_mle.cpp`, `*_throw.cpp`, `*_warn.cpp` next to the AC/WA/TLE/RE/CE ones.
