@@ -121,8 +121,11 @@ def test_cli():
     code, out, _ = run_judge([ok_cpp, "1-3", "--no-color", "--stop"])
     check("warning" not in out and "Memory  peak" in out and "64 MB per test" in out,
           "clean program: no warnings, memory line, limit in header", out)
-    code, out, _ = run_judge([ok_cpp, "1-3", "--no-color", "--stop", "--ml", "1"])
-    check("Memory Limit Exceeded" in out and "limit is 1 MB" in out, "--ml 1 makes a small program MLE", out)
+    mle_cpp = os.path.join(SAMPLES, "batch", "primes_mle.cpp")     # 200 MB: a tiny program is under 1 MB on macOS
+    code, out, _ = run_judge([mle_cpp, "1-3", "--no-color", "--stop", "--ml", "100"])
+    check("Memory Limit Exceeded" in out and "limit is 100 MB" in out, "--ml 100: a 200 MB program is MLE", out)
+    code, out, _ = run_judge([mle_cpp, "1-3", "--no-color", "--stop", "--ml", "512"])
+    check(code == 0 and "ACCEPTED" in out, "--ml 512: the same program is accepted", f"exit {code}\n{out}")
     code, out, _ = run_judge(["--ml", "0"])
     check(code == 2 and "--ml must be" in out, "judge.py --ml 0 is rejected", f"exit {code}\n{out}")
     code, out, plain = run_judge([wa_cpp, "1-3", "--ascii", "--no-color"])
