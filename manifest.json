@@ -482,7 +482,7 @@
 ]
 },
 "files": {
-"CHANGELOG.txt": "23c6f19d0f6f2739da5df170edb96b93c96cb685d395436515e627c9be3cdf6a",
+"CHANGELOG.txt": "46e4c85b1bcd3f2103122bb9171993709574874c9c5548f3d569fd801b72dab1",
 "README.txt": "d0e97da728637b9be3226c2bbe85d390258d789ffac336da4c50dc4d0c7ae7c2",
 "include/bits/stdc++.h": "1545f1f4b55b3acb866effca73203f3a9131773f147331cbf4e983ebf36d6cc9",
 "judge.cmd": "84038f11038804a85edc6df3e3c64f10a72891fad6b98ac7a7ae08e358ed7f44",
@@ -4397,7 +4397,7 @@
 "student/set_files/judge.bat"
 ],
 "README.txt": [
-"735102d6e33412fc1ab08b249115e9879e6da1c33c349425fd3fc762e2c0c6aa",
+"698e43206c3c3916da0a4784198384c4945783f08a2e3807feaf54813746837e",
 "student/README.txt"
 ]
 },
@@ -4405,5 +4405,5 @@
 "": "core/",
 "problems/": "problems/"
 },
-"version": "1.6"
+"version": "1.7"
 }

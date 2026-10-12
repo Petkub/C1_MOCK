@@ -1,5 +1,6 @@
 POSN Practice Judge - changes
 
+1.7  README: in VS Code open the Mock_Test folder that holds Judge (an unzipped copy can be Mock_Test inside Mock_Test).
 1.6  Memory limit (MLE) with peak memory shown; the program's stderr is shown after a crash; g++ -Wall warnings shown.
 1.5  Statement PDFs, Makefile, judge.bat, README and VS Code tasks now update too (your .cpp files never).
 1.4  Automatic update check every 10 minutes instead of every hour.
