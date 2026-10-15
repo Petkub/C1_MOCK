@@ -54,7 +54,7 @@ def copy_judge(root, manifest):
     for rel, src in build_manifest.judge_files():
         copy_file(os.path.join(REPO, src), os.path.join(judge, *rel.split("/")))
     with open(os.path.join(judge, "manifest.json"), "w", encoding="utf-8") as f:
-        f.write(build_manifest.dumps(manifest))
+        f.write(build_manifest.dumps(build_manifest.installed(manifest)))     # as the updater leaves it
 
 
 def copy_package_files(root):
@@ -94,7 +94,7 @@ def main():
     root = prepare(out)
     copy_judge(root, manifest)
     n = copy_package_files(root)
-    print(f"Built {root} (v{manifest['version']}, {n} sets)")
+    print(f"Built {root} (v{build_manifest.installed(manifest)['version']}, {n} sets)")
     if "--no-zip" not in argv:
         path = make_zip(root)
         print(f"Built {path} ({os.path.getsize(path) // 1024} KB)")

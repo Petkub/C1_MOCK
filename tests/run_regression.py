@@ -168,10 +168,19 @@ def sha(path):
         return hashlib.sha256(f.read()).hexdigest()
 
 
-def serve(folder):
-    """Serve folder over HTTP on a free port of this computer (stands in for raw.githubusercontent.com)."""
-    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=folder)
-    handler.log_message = lambda *a: None
+def serve(folder, log=None):
+    """Serve folder over HTTP on a free port of this computer (stands in for raw.githubusercontent.com).
+    log: a list that gets the path of every request."""
+    class Handler(http.server.SimpleHTTPRequestHandler):
+        def log_message(self, *a):
+            pass
+
+        def do_GET(self):
+            if log is not None:
+                log.append(self.path.split("?")[0])
+            super().do_GET()
+
+    handler = functools.partial(Handler, directory=folder)
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     return srv, f"http://127.0.0.1:{srv.server_address[1]}/"
@@ -208,10 +217,11 @@ def rebuild_manifest(repo2):
 
 
 def edit_manifest(repo2, fn):
+    """fn changes the part of manifest.json that the updater installs ("full" in format 2)."""
     p = os.path.join(repo2, "manifest.json")
     with open(p, encoding="utf-8") as f:
         m = json.load(f)
-    fn(m)
+    fn(m.get("full", m))
     with open(p, "w", encoding="utf-8") as f:
         json.dump(m, f)
 
@@ -331,6 +341,72 @@ def test_manifest():
     check(p.returncode == 0, "manifest.json is up to date", p.stdout.decode("utf-8", "replace"))
 
 
+def test_fast_update():
+    """A judge from before 2.3 (one download per file) takes only the new judge.py / updater.py; the new updater
+    then gets a whole new set in a few requests (a bundle for the test data, one template for all N.cpp)."""
+    print("Fast update")
+    tmp = tempfile.mkdtemp(prefix="judge_fast_")
+    try:
+        subprocess.run([sys.executable, os.path.join(REPO, "tools", "build_dist.py"), "--out", tmp, "--no-zip"],
+                       check=True, stdout=subprocess.DEVNULL)
+        root = os.path.join(tmp, os.listdir(tmp)[0])
+        judge_dir = os.path.join(root, "Judge")
+        sets = sorted(int(d.split("_")[1]) for d in os.listdir(root) if d.startswith("Mock_"))
+        last = "Mock_%d" % sets[-1]
+        # an old package: the updater and manifest of the last format-1 release
+        shutil.copy(os.path.join(REPO, "tests", "fixtures", "updater_v2.py"), os.path.join(judge_dir, "updater.py"))
+        shutil.copy(os.path.join(REPO, "tools", "legacy_manifest.json"), os.path.join(judge_dir, "manifest.json"))
+        log = []
+        srv, url = serve(REPO, log)
+        env = dict(os.environ, JUDGE_UPDATE_URL=url)
+        p = subprocess.run([sys.executable, os.path.join(judge_dir, "updater.py")], env=env, cwd=root,
+                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        out = p.stdout.decode("utf-8", "replace")
+        got = sorted(set(log) - {"/manifest.json"})
+        check(p.returncode == 0 and got and set(got) <= {"/core/judge.py", "/core/updater.py"}
+              and sha(os.path.join(judge_dir, "updater.py")) == sha(os.path.join(REPO, "core", "updater.py")),
+              f"old updater takes only the new updater ({len(log)} requests)", f"{got}\n{out}")
+        # the new updater, and a set whose folder is not there yet
+        shutil.rmtree(os.path.join(judge_dir, "problems", "batch", last))
+        shutil.rmtree(os.path.join(root, last))
+        del log[:]
+        p = subprocess.run([sys.executable, os.path.join(judge_dir, "updater.py")], env=env, cwd=root,
+                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        out = p.stdout.decode("utf-8", "replace")
+        data = os.path.join(judge_dir, "problems", "batch", last)
+        files = [f for _, _, fs in os.walk(data) for f in fs]
+        check(p.returncode == 0 and len(files) > 5 and os.path.exists(os.path.join(root, last, "1.cpp"))
+              and os.path.exists(os.path.join(root, last, last + ".pdf")) and len(log) <= 12,
+              f"new updater installs {last} ({len(files)} files) in {len(log)} requests", f"{log}\n{out}")
+        with open(os.path.join(judge_dir, "manifest.json"), encoding="utf-8") as f:
+            installed = json.load(f)
+        check("full" not in installed and installed.get("version") == build_version(),
+              "the installed manifest is the full version")
+        srv.shutdown()
+
+        # a bundle that does not match its hash: refused, nothing installed
+        repo2 = make_repo2(tmp, "9.9", "marker-bundle")
+        edit_manifest(repo2, lambda m: m["bundles"]["bundles/%s.zip" % last].update(sha256="0" * 64))
+        shutil.rmtree(data)
+        srv, url = serve(repo2)
+        p = subprocess.run([sys.executable, os.path.join(judge_dir, "updater.py")],
+                           env=dict(os.environ, JUDGE_UPDATE_URL=url), cwd=root,
+                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        out = p.stdout.decode("utf-8", "replace")
+        check(p.returncode == 1 and "hash mismatch" in out and not os.path.exists(data)
+              and "marker-bundle" not in open(os.path.join(judge_dir, "judge.py"), encoding="utf-8").read(),
+              "bad bundle: update refused, nothing installed", out)
+        srv.shutdown()
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def build_version():
+    with open(os.path.join(REPO, "VERSION"), encoding="utf-8") as f:
+        return f.read().strip()
+
+
+
 def main():
     if not shutil.which("g++"):
         print("g++ not found: the regression tests need a C++ compiler in PATH.")
@@ -340,6 +416,7 @@ def main():
     test_cli()
     test_student_package()
     test_updater()
+    test_fast_update()
     test_data()
     test_manifest()
     print()

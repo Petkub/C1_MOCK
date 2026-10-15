@@ -1239,7 +1239,7 @@ def cmd_update(st):
         print(st.red("updater.py is missing next to judge.py; download the package again."))
         return 1
     print("  " + st.dim("Checking for updates ..."), flush=True)
-    r = updater.check(ROOT, force=True)
+    r = updater.check(ROOT, force=True, notify=lambda text: print("  " + st.dim(text), flush=True))
     if r.status == "updated":
         print("  " + st.green(st.bold(f"Judge {r.message}")))
         for name in r.files[:15]:
@@ -1260,7 +1260,7 @@ def self_update(st, argv):
     if updater is None or "--no-update" in argv or os.environ.get("JUDGE_NO_UPDATE"):
         return None
     try:
-        r = updater.check(ROOT)
+        r = updater.check(ROOT, notify=lambda text: print("  " + st.dim(text), flush=True))
     except Exception:
         return None
     if r.status != "updated":

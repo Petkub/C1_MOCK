@@ -23,6 +23,7 @@ tools/build_manifest.py   writes manifest.json (hashes of everything students ge
 tools/build_dist.py       builds dist/Mock_Test.zip for new students
 VERSION                   the version students see ("Judge v1.4")
 manifest.json             generated, served to students by GitHub; never edit by hand
+bundles/                  generated zips of each problem folder (fast updates); commit them with manifest.json
 ```
 
 What a student has: `Mock_Test/Judge/` (= `core/` + `problems/` + `manifest.json`) and `Mock_Test/Mock_K/1.cpp ... 8.cpp`

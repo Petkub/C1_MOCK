@@ -115,6 +115,19 @@ Propose the design and wait for approval before writing it.
   (from `Judge/manifest.json`). Recovery when `judge.py` itself is broken: `python3 ../Judge/updater.py`.
 - Manifest format (version in `tools/build_manifest.py`): `version`, `sources` (Judge/ prefix -> repo folder),
   `files` (Judge/ path -> sha256), `managed` and `create_only` (package path -> [sha256, repo path]).
+- Speed: GitHub raw answers one file in about 0.3 s, so an updater that fetches files one
+  by one needs minutes for a new set of problems (v3.0 of C1_PRACTICE: ~1,950 files, ~11 minutes, and one slow
+  request aborted all of it). The updater therefore downloads in parallel (`WORKERS`), retries each file (`TRIES`),
+  fetches one `bundles/<folder>.zip` per problem folder when it needs many of its files (every member is still
+  checked against its own sha256 in `files`), and prints "Downloading ..." for big updates.
+  `build_manifest.py` writes the bundles (deterministic zips, rewritten only when their content changes) and
+  `manifest.json` lists them under `bundles`. Commit `bundles/` with the manifest.
+- Format 2 (because judges before this change still fetch one file at a time): `tools/legacy_manifest.json` is
+  the last manifest those old updaters understood. The top level of `manifest.json` is then a legacy view (that
+  release's unchanged entries plus the new `judge.py` and `updater.py`), and the real manifest is under `full`.
+  An old judge thus downloads two files, restarts with the new updater, and its next check installs `full`
+  quickly. The updater writes the `full` part as `Judge/manifest.json`. Keep `legacy_manifest.json`; never edit
+  it. `tests/fixtures/updater_v2.py` is that old updater, used by the regression test "Fast update".
 
 ## Releasing a change to students
 

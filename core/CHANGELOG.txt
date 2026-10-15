@@ -1,5 +1,6 @@
 POSN Practice Judge - changes
 
+1.9  Updates are much faster: files download in parallel, and a whole mock set comes as one zip.
 1.8  Memory peak of a very fast program no longer shows the judge's own size (about 20 MB).
 1.7  README: in VS Code open the Mock_Test folder that holds Judge (an unzipped copy can be Mock_Test inside Mock_Test).
 1.6  Memory limit (MLE) with peak memory shown; the program's stderr is shown after a crash; g++ -Wall warnings shown.

@@ -16,9 +16,19 @@ Rules
     missing). The old copy of every replaced file goes to Judge/.backup/ (package files under _package/)
   - updates only an installed package (Judge/judge.py and Judge/manifest.json exist), never the source repo
 
+Speed: files are downloaded in parallel (each one retried), and a whole problem folder comes as one zip ("bundle")
+when many of its files are needed, so a new set of problems takes a few requests instead of thousands. Every file
+taken from a bundle is still checked against its own hash in the manifest.
+
+Manifest format 2: the top level is what judges older than 2.3 read (their updater downloads one file at a time).
+For them it lists only the new judge.py / updater.py and the files that did not change since the last format-1
+release, so an old judge first takes this updater (two files) and this updater then reads "full", the real version.
+
 Recovery:  python3 ../Judge/updater.py      force a check and re-download changed or damaged files
 """
+import concurrent.futures
 import hashlib
+import io
 import json
 import os
 import re
@@ -27,6 +37,7 @@ import subprocess
 import sys
 import time
 import urllib.request
+import zipfile
 
 REPO = "Petkub/C1_MOCK"
 BASE_URL = "https://raw.githubusercontent.com/" + REPO + "/main/"      # the one place the hosting is set
@@ -34,6 +45,11 @@ TIMEOUT = 2.0                       # seconds per network operation
 CHECK_INTERVAL = 600                # seconds between automatic checks (10 minutes)
 MAX_MANIFEST = 8 * 1024 * 1024      # bytes
 MAX_FILE = 64 * 1024 * 1024
+MAX_BUNDLE = 64 * 1024 * 1024
+TRIES = 3                           # attempts per file (the manifest itself: one, so an offline start stays fast)
+WORKERS = 8                         # parallel downloads
+BUNDLE_MIN = 8                      # fetch a folder's bundle when at least this many of its files are needed
+NOTIFY_MIN = 20                     # say "Downloading ..." when an update needs at least this many files
 ROOT = os.path.dirname(os.path.abspath(__file__))
 STAMP = ".update_check"             # Judge/.update_check: time of the last check
 BACKUP = ".backup"
@@ -63,14 +79,22 @@ def base_url():
     return url
 
 
-def fetch(url, limit, fresh=False):
-    """Download url (at most limit bytes). Raises on any problem. fresh: skip the CDN cache (GitHub raw keeps
-    a file for up to 5 minutes), used by the forced check so --update sees a new version at once."""
+def fetch(url, limit, fresh=False, tries=1):
+    """Download url (at most limit bytes), trying up to tries times. Raises on any problem. fresh: skip the CDN
+    cache (GitHub raw keeps a file for up to 5 minutes), used by the forced check so --update sees a new version
+    at once."""
     if fresh:
         url += "?t=" + str(int(time.time()))
     req = urllib.request.Request(url, headers={"User-Agent": "posn-judge-updater"})
-    with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-        data = r.read(limit + 1)
+    for attempt in range(tries):
+        try:
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+                data = r.read(limit + 1)
+            break
+        except Exception:
+            if attempt + 1 == tries:
+                raise
+            time.sleep(0.5 * (attempt + 1))
     if len(data) > limit:
         raise ValueError("file too big: " + url)
     return data
@@ -138,6 +162,24 @@ def is_hash(s):
     return isinstance(s, str) and len(s) == 64 and all(c in "0123456789abcdef" for c in s)
 
 
+def view(manifest):
+    """The part of a manifest this updater acts on: "full" in format 2, else the manifest itself."""
+    full = manifest.get("full") if isinstance(manifest, dict) else None
+    return full if isinstance(full, dict) else manifest
+
+
+def plan_bundles(remote):
+    """{repo path of a zip: (sha256, Judge/ folder prefix)} from the manifest. Raises ValueError when not acceptable."""
+    out = {}
+    for name, spec in (remote.get("bundles") or {}).items():
+        if (not isinstance(name, str) or ".." in name or name.startswith("/") or "\\" in name
+                or not isinstance(spec, dict) or not is_hash(spec.get("sha256"))
+                or not isinstance(spec.get("prefix"), str) or judge_path(spec["prefix"].rstrip("/")) is None):
+            raise ValueError("bad bundle: " + str(name))
+        out[name] = (spec["sha256"], spec["prefix"])
+    return out
+
+
 # ----------------------------------------------------------------------------- planning
 def plan(judge_dir, remote, local, force):
     """Lists of (path, repo path, sha): Judge/ files to update, managed package files to replace, create-only
@@ -188,18 +230,55 @@ def plan(judge_dir, remote, local, force):
     return updates, managed, creates
 
 
-def download(items, tmp, url, fresh):
-    """Download every item into tmp (same relative paths) and verify its hash. Raises on any mismatch."""
-    for p, src, sha in items:
-        data = fetch(url + src.replace(os.sep, "/"), MAX_FILE, fresh)
+def from_bundles(items, url, fresh, bundles, pool):
+    """{Judge/ path: data} of the items that come in a bundle (a folder's zip, fetched when it holds at least
+    BUNDLE_MIN of the needed files). A member is taken only when its hash is the one in the manifest; whatever a
+    bundle lacks is downloaded on its own afterwards."""
+    wanted = {p.replace(os.sep, "/"): sha for p, _, sha in items}
+    jobs = []
+    for name, (sha, prefix) in sorted(bundles.items()):
+        mine = {rel: s for rel, s in wanted.items() if rel.startswith(prefix)}
+        if len(mine) >= BUNDLE_MIN:
+            jobs.append((name, sha, mine, pool.submit(fetch, url + name, MAX_BUNDLE, fresh, TRIES)))
+    got = {}
+    for name, sha, mine, job in jobs:
+        data = job.result()
         if sha256(data) != sha:
+            raise ValueError("hash mismatch: " + name)
+        with zipfile.ZipFile(io.BytesIO(data)) as z:
+            sizes = {i.filename: i.file_size for i in z.infolist()}
+            for rel, s in mine.items():
+                if sizes.get(rel, MAX_FILE + 1) <= MAX_FILE:
+                    member = z.read(rel)
+                    if sha256(member) == s:
+                        got[rel] = member
+    return got
+
+
+def save(data, p, tmp):
+    dest = os.path.join(tmp, p)
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    with open(dest, "wb") as f:
+        f.write(data)
+    if p.endswith(".py"):
+        compile(data.decode("utf-8"), p, "exec")       # a syntax error must never reach Judge/
+
+
+def download(items, tmp, url, fresh, pool, bundles=None):
+    """Download every item into tmp (same relative paths), in parallel, from bundles where that saves requests,
+    and verify its hash. Raises on any mismatch or failed download."""
+    got = from_bundles(items, url, fresh, bundles, pool) if bundles else {}
+    rest = [item for item in items if item[0].replace(os.sep, "/") not in got]
+    sources = sorted({src for _, src, _ in rest})          # e.g. one template.cpp for all the N.cpp files
+    data = dict(zip(sources, pool.map(lambda src: fetch(url + src.replace(os.sep, "/"), MAX_FILE, fresh, TRIES),
+                                      sources)))
+    for p, src, sha in rest:
+        if sha256(data[src]) != sha:
             raise ValueError("hash mismatch: " + p)
-        dest = os.path.join(tmp, p)
-        os.makedirs(os.path.dirname(dest), exist_ok=True)
-        with open(dest, "wb") as f:
-            f.write(data)
-        if p.endswith(".py"):
-            compile(data.decode("utf-8"), p, "exec")       # a syntax error must never reach Judge/
+        save(data[src], p, tmp)
+    for p, _, _ in items:
+        if p.replace(os.sep, "/") in got:
+            save(got[p.replace(os.sep, "/")], p, tmp)
 
 
 def test_new_judge(tmp):
@@ -255,8 +334,9 @@ def checked_recently(judge_dir):
 
 
 # ----------------------------------------------------------------------------- main entry
-def check(judge_dir=ROOT, force=False):
-    """Update Judge/ if the repo has a newer version. Returns a Result; never raises."""
+def check(judge_dir=ROOT, force=False, notify=None):
+    """Update Judge/ if the repo has a newer version. Returns a Result; never raises. notify(text) is called
+    once before a big download (NOTIFY_MIN files or more), so the student knows why the judge waits."""
     local = load_json(os.path.join(judge_dir, "manifest.json"))
     if not os.path.isfile(os.path.join(judge_dir, "judge.py")) or local is None:
         return Result("skipped", "not an installed Judge package (no manifest.json next to judge.py)")
@@ -268,19 +348,25 @@ def check(judge_dir=ROOT, force=False):
         touch_stamp(judge_dir)
         url = base_url()
         data = fetch(url + "manifest.json", MAX_MANIFEST, force)
-        remote = json.loads(data.decode("utf-8"))
+        remote = view(json.loads(data.decode("utf-8")))
         updates, managed, creates = plan(judge_dir, remote, local, force)
+        bundles = plan_bundles(remote)
         if not updates and not managed and not creates and remote["version"] == version:
             return Result("current", f"Judge v{version} is up to date", version)
+        count = len(updates) + len(managed) + len(creates)
+        if notify is not None and count >= NOTIFY_MIN:
+            notify(f"Downloading Judge v{remote['version']} ({count} files) ...")
         shutil.rmtree(tmp, ignore_errors=True)
         os.makedirs(tmp)
-        download(updates, tmp, url, force)
-        download(managed, os.path.join(tmp, "_managed"), url, force)
-        download(creates, os.path.join(tmp, "_sets"), url, force)
+        with concurrent.futures.ThreadPoolExecutor(WORKERS) as pool:
+            download(updates, tmp, url, force, pool, bundles)
+            download(managed, os.path.join(tmp, "_managed"), url, force, pool)
+            download(creates, os.path.join(tmp, "_sets"), url, force, pool)
         test_new_judge(tmp)
         apply(judge_dir, updates, managed, creates, tmp)
-        with open(os.path.join(tmp, "manifest.json"), "wb") as f:
-            f.write(data)
+        with open(os.path.join(tmp, "manifest.json"), "w", encoding="utf-8") as f:
+            json.dump(remote, f, indent=0, sort_keys=True)      # what is installed now (format 2: its "full" part)
+            f.write("\n")
         os.replace(os.path.join(tmp, "manifest.json"), os.path.join(judge_dir, "manifest.json"))
         names = [p.replace(os.sep, "/") for p, _, _ in updates + managed + creates]
         return Result("updated", f"updated to v{remote['version']} ({len(names)} files)", remote["version"], names)
