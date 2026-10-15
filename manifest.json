@@ -485,7 +485,7 @@
 "README.txt": "d0e97da728637b9be3226c2bbe85d390258d789ffac336da4c50dc4d0c7ae7c2",
 "include/bits/stdc++.h": "1545f1f4b55b3acb866effca73203f3a9131773f147331cbf4e983ebf36d6cc9",
 "judge.cmd": "84038f11038804a85edc6df3e3c64f10a72891fad6b98ac7a7ae08e358ed7f44",
-"judge.py": "ae451372da8ebfdc7b1e6ff7be6c785a7619ed8ebe7b60346c45cceaaf46f67a",
+"judge.py": "2aefd8118653812660dd4b976581c8539b66675ecfd97b6699d417a72ca7773c",
 "problems/batch/Mock_1/1/01.in": "7da4606de7fa8bb5181beea4940deefacde4b87ba5431fabd09a4e315f378d95",
 "problems/batch/Mock_1/1/01.out": "f458f6d86129f5c0ab6c964238772fbe286c10ee24ae1f68f9064b710a2cc586",
 "problems/batch/Mock_1/1/02.in": "5324ba1fb0bb03929244b7a54770c8a14523f2cc4974eb1529f3238ef8059653",
@@ -4748,11 +4748,11 @@
 ]
 },
 "files": {
-"CHANGELOG.txt": "b9266817c3370b9addaf3ae2bc9c16c4caa2475d85363821664aed3900d3546d",
+"CHANGELOG.txt": "1993d3bbf5afe5b65f62e8dd0cad4595c5d76fe859bd0ab69023f34c1466ed40",
 "README.txt": "d0e97da728637b9be3226c2bbe85d390258d789ffac336da4c50dc4d0c7ae7c2",
 "include/bits/stdc++.h": "1545f1f4b55b3acb866effca73203f3a9131773f147331cbf4e983ebf36d6cc9",
 "judge.cmd": "84038f11038804a85edc6df3e3c64f10a72891fad6b98ac7a7ae08e358ed7f44",
-"judge.py": "ae451372da8ebfdc7b1e6ff7be6c785a7619ed8ebe7b60346c45cceaaf46f67a",
+"judge.py": "2aefd8118653812660dd4b976581c8539b66675ecfd97b6699d417a72ca7773c",
 "problems/batch/Mock_1/1/01.in": "7da4606de7fa8bb5181beea4940deefacde4b87ba5431fabd09a4e315f378d95",
 "problems/batch/Mock_1/1/01.out": "f458f6d86129f5c0ab6c964238772fbe286c10ee24ae1f68f9064b710a2cc586",
 "problems/batch/Mock_1/1/02.in": "5324ba1fb0bb03929244b7a54770c8a14523f2cc4974eb1529f3238ef8059653",
@@ -8671,7 +8671,7 @@
 "": "core/",
 "problems/": "problems/"
 },
-"version": "1.9"
+"version": "2.0"
 },
 "managed": {
 ".vscode/settings.json": [

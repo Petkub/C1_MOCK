@@ -100,6 +100,27 @@ def test_exited_peak():
     check(judge.exited_peak(3 * own) == 3 * own * scale, "a fast big program's ru_maxrss is still used",
           f"got {judge.exited_peak(3 * own)}")
 
+def test_missed_last_reading():
+    """A program that grows after the last memory reading (it exits before the next one) is still MLE: wait4's
+    ru_maxrss is used too. On macOS this happened when the exiting program was reaped before its final reading."""
+    if os.name == "nt":
+        return
+    name = "linux_peak_memory" if sys.platform.startswith("linux") else "mac_peak_memory"
+    real = getattr(judge, name)
+    seen = set()
+
+    def first_only(pid):           # one reading right after each start (the program is still tiny), then none
+        if pid in seen:
+            return None
+        seen.add(pid)
+        return 1024 * 1024
+    setattr(judge, name, first_only)
+    try:
+        verdict, _ = judge_sample(os.path.join(SAMPLES, "batch", "primes_mle.cpp"), "1-3", False)
+    finally:
+        setattr(judge, name, real)
+    check(verdict == "MLE", "the MLE sample is MLE even when the readings miss its growth", f"got {verdict}")
+
 # ----------------------------------------------------------------------------- 2. command line
 def run_judge(args, cwd=REPO, judge_path=JUDGE):
     """Run judge.py like a student. Returns (exit code, output text, output is plain ASCII)."""
@@ -413,6 +434,7 @@ def main():
         return 1
     test_samples()
     test_exited_peak()
+    test_missed_last_reading()
     test_cli()
     test_student_package()
     test_updater()

@@ -529,7 +529,8 @@ def wait_program(p, timeout):
     """Wait for the judged program like p.wait(timeout) and return its peak memory in bytes (None if unknown).
     Windows: GetProcessMemoryInfo on the handle after the exit (exact). Linux / macOS: the program's own
     high-water mark is read every millisecond while it runs (/proc VmHWM, proc_pid_rusage); ru_maxrss from
-    wait4 is only a fallback (exited_peak), because it also counts the judge's own image before the exec."""
+    wait4 (exited_peak) is added at the end, because the program can grow after the last reading (or exit before
+    the first one); it is used only when clearly bigger than the judge, whose image it also counts."""
     if os.name == "nt":
         p.wait(timeout=timeout)
         return windows_peak_memory(p)
@@ -545,8 +546,9 @@ def wait_program(p, timeout):
         pid, status, ru = os.wait4(p.pid, os.WNOHANG)
         if pid == p.pid:
             p.returncode = exit_code(status)
-            if peak is None:
-                peak = exited_peak(ru.ru_maxrss)
+            last = exited_peak(ru.ru_maxrss)
+            if last is not None and (peak is None or last > peak):
+                peak = last
             return peak
         if deadline is not None and time.perf_counter() >= deadline:
             raise subprocess.TimeoutExpired(p.args, timeout)
@@ -555,11 +557,10 @@ def wait_program(p, timeout):
 
 
 def exited_peak(maxrss):
-    """Peak memory (bytes) of a program that exited before its first reading, from wait4's ru_maxrss, or None.
+    """Peak memory (bytes) of a program from wait4's ru_maxrss, or None.
     ru_maxrss is at least the judge's own peak (the child starts as a copy of the judge, or shares its memory
     until the exec), so it is the program's own peak only when it is clearly bigger than that (the kernel's
-    counters are approximate); otherwise the program was small (it ran for under a millisecond) and its peak
-    is unknown."""
+    counters are approximate); otherwise the program was small and only the readings know its peak."""
     try:
         import resource              # POSIX only; wait_program does not come here on Windows
         own = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
@@ -586,7 +587,8 @@ MAC_RUSAGE = [None]     # (libproc, buffer) once loaded; False when proc_pid_rus
 
 
 def mac_peak_memory(pid):
-    """ri_lifetime_max_phys_footprint of a running process (proc_pid_rusage, RUSAGE_INFO_V4), bytes."""
+    """Peak footprint of a running process (proc_pid_rusage, RUSAGE_INFO_V4), bytes: ri_lifetime_max_phys_footprint,
+    or ri_phys_footprint if that is bigger (the lifetime maximum can lag behind)."""
     if MAC_RUSAGE[0] is False:
         return None
     try:
@@ -599,9 +601,10 @@ def mac_peak_memory(pid):
         if lib.proc_pid_rusage(pid, 4, buf) != 0:
             return None
         fields = struct.unpack_from("<40Q", buf, 16)         # after the 16-byte uuid
-        resident, lifetime_max = fields[6], fields[28]
-        if 0 < lifetime_max < (1 << 44) and lifetime_max >= resident:
-            return int(lifetime_max)
+        # not compared with ri_resident_size: that also counts shared library pages, so it is often bigger
+        peak = max(fields[7], fields[28])
+        if 0 < peak < (1 << 44):
+            return int(peak)
     except Exception:
         MAC_RUSAGE[0] = False
     return None
